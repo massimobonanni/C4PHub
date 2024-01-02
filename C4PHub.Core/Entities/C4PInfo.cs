@@ -40,5 +40,10 @@ namespace C4PHub.Core.Entities
         /// Gets or sets the user who published the event.
         /// </summary>
         public string UserPublished { get; set; }
+
+        public override string ToString()
+        {
+            return $"Event Name: {EventName}\nEvent Location: {EventLocation}\nEvent Date: {EventDate}\nExpired Date: {ExpiredDate}\nUser Published: {UserPublished}";
+        }
     }
 }

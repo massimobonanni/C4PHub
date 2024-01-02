@@ -7,12 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\C4PHub.Core\C4PHub.Core.csproj" />
+    <ProjectReference Include="..\C4PHub.OpenAI\C4PHub.OpenAI.csproj" />
     <ProjectReference Include="..\C4PHub.Sessionize\C4PHub.Sessionize.csproj" />
     <ProjectReference Include="..\C4PHub.StorageAccount\C4PHub.StorageAccount.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

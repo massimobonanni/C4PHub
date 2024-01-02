@@ -1,13 +1,18 @@
 using C4PHub.Core.Implementations;
 using C4PHub.Core.Interfaces;
+using C4PHub.OpenAI.Implementations;
 using C4PHub.Sessionize.Implementations;
+using C4PHub.StorageAccount.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.local.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
-builder.Services.AddKeyedScoped<IC4PExtractor, SessionizeC4PExtractor>("extractors");
-
-builder.Services.AddScoped<IC4PExtractorFactory, CoreExtractorFactory>();
+builder.Services.AddC4Pmanager();
+builder.Services.AddScoped<IC4PPersistance, StorageAccountTablePersistance>();
 
 builder.Services.AddControllersWithViews();
 

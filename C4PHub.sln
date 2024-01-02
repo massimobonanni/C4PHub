@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.Core", "C4PHub.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.Web", "C4PHub.Web\C4PHub.Web.csproj", "{BC92A899-25AA-4A37-B8A8-624BB3F5D9FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.Sessionize", "C4PHub.Sessionize\C4PHub.Sessionize.csproj", "{C530B62C-3DAF-46AE-986D-D7EA7D3FED3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.Sessionize", "C4PHub.Sessionize\C4PHub.Sessionize.csproj", "{C530B62C-3DAF-46AE-986D-D7EA7D3FED3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.StorageAccount", "C4PHub.StorageAccount\C4PHub.StorageAccount.csproj", "{58BA8F8B-2C34-411A-A7D5-FBF5EC9A2BDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.StorageAccount", "C4PHub.StorageAccount\C4PHub.StorageAccount.csproj", "{58BA8F8B-2C34-411A-A7D5-FBF5EC9A2BDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.OpenAI", "C4PHub.OpenAI\C4PHub.OpenAI.csproj", "{6D5D4330-583E-48DF-B581-0D10BF0A58EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{58BA8F8B-2C34-411A-A7D5-FBF5EC9A2BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58BA8F8B-2C34-411A-A7D5-FBF5EC9A2BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58BA8F8B-2C34-411A-A7D5-FBF5EC9A2BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D5D4330-583E-48DF-B581-0D10BF0A58EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D5D4330-583E-48DF-B581-0D10BF0A58EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D5D4330-583E-48DF-B581-0D10BF0A58EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D5D4330-583E-48DF-B581-0D10BF0A58EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,5 +27,12 @@ namespace C4PHub.Core.Interfaces
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task representing the asynchronous operation. The task result contains a boolean value indicating if the C4PInfo object was saved successfully.</returns>
         Task<bool> SaveC4PAsync(C4PInfo c4p, CancellationToken token = default);
+
+        /// <summary>
+        /// Gets a collection of opened C4PInfo objects asynchronously.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The task result contains a collection of opened C4PInfo objects.</returns>
+        Task<IEnumerable<C4PInfo>> GetOpenedC4PsAsync(CancellationToken token = default);
     }
 }
