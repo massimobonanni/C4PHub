@@ -45,5 +45,15 @@ namespace C4PHub.Core.Entities
         {
             return $"Event Name: {EventName}\nEvent Location: {EventLocation}\nEvent Date: {EventDate}\nExpired Date: {ExpiredDate}\nUser Published: {UserPublished}";
         }
+
+        public bool IsComplete()
+        {
+            return !string.IsNullOrWhiteSpace(Url) &&
+                !string.IsNullOrWhiteSpace(EventName) &&
+                !string.IsNullOrWhiteSpace(EventLocation) &&
+                EventDate != default &&
+                ExpiredDate != default &&
+                !string.IsNullOrWhiteSpace(UserPublished);
+        }
     }
 }

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\C4PHub.Auth\C4PHub.Auth.csproj" />
     <ProjectReference Include="..\C4PHub.Core\C4PHub.Core.csproj" />
     <ProjectReference Include="..\C4PHub.OpenAI\C4PHub.OpenAI.csproj" />
     <ProjectReference Include="..\C4PHub.Sessionize\C4PHub.Sessionize.csproj" />
