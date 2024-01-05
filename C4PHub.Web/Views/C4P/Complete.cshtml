@@ -1,57 +1,78 @@
 ﻿@model C4PHub.Web.Models.C4P.CompleteModel
 @{
-    ViewData["Title"] = "Complete c4p";
+    ViewData["Title"] = "Add New C4P";
 }
 
-<h1>Complete C4P</h1>
+<h1>Add New C4P</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Complete">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserPublished" class="control-label"></label>
-                <input asp-for="UserPublished" class="form-control" disabled />
-                @Html.HiddenFor(m => m.UserPublished)
-                <span asp-validation-for="UserPublished" class="text-danger"></span>
+<form asp-action="Complete">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @Html.HiddenFor(m => m.UserPublished)
+    @if (!Model.IsUserAuthenticated)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="UserPublished" class="control-label"></label>
+                    <input asp-for="UserPublished" class="form-control" disabled />
+                    <span asp-validation-for="UserPublished" class="text-danger"></span>
+                </div>
             </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-8">
             <div class="form-group">
                 <label asp-for="Url" class="control-label"></label>
                 <input asp-for="Url" class="form-control" disabled />
                 @Html.HiddenFor(m => m.Url)
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
             <div class="form-group">
                 <label asp-for="EventName" class="control-label"></label>
                 <input asp-for="EventName" class="form-control" />
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
             <div class="form-group">
                 <label asp-for="EventLocation" class="control-label"></label>
                 <input asp-for="EventLocation" class="form-control" />
-                <span asp-validation-for="EventLocation"  class="text-danger"></span>
+                <span asp-validation-for="EventLocation" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="EventDate" class="control-label"></label>
                 <input asp-for="EventDate" class="form-control" />
                 <span asp-validation-for="EventDate" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="ExpiredDate" class="control-label"></label>
                 <input asp-for="ExpiredDate" class="form-control" />
                 <span asp-validation-for="ExpiredDate" class="text-danger"></span>
             </div>
-            <br/>
-            <div class="form-group">
-                <input type="submit" value="Complete" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{

@@ -25,8 +25,17 @@ namespace C4PHub.Core.Implementations
             try
             {
                 var response = await _client.GetAsync(url, token);
-                var requestUri = response.RequestMessage.RequestUri;
-                resolvedUrl = requestUri.ToString();
+                if (response.IsSuccessStatusCode)
+                {
+                    var requestUri = response.RequestMessage.RequestUri;
+                    resolvedUrl = requestUri.ToString();
+                }
+                else
+                {
+                    _logger.LogWarning("Error resolving url {0} with response code {1}", url, response.StatusCode);
+                    resolvedUrl = null;
+                }
+
             }
             catch (Exception ex)
             {

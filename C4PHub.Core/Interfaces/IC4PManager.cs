@@ -1,4 +1,5 @@
 ﻿using C4PHub.Core.Entities;
+using C4PHub.Core.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace C4PHub.Core.Interfaces
     /// </summary>
     public interface IC4PManager
     {
-        Task<C4PInfo> CreateC4PFromUrlAsync(string url, CancellationToken token = default);
+        Task<ServiceResponse<C4PInfo>> CreateC4PFromUrlAsync(string url, CancellationToken token = default);
     }
 }
