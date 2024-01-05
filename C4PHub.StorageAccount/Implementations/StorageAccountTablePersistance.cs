@@ -1,4 +1,6 @@
-﻿using Azure.Data.Tables;
+﻿using Azure;
+using Azure.Data.Tables;
+using Azure.Data.Tables.Models;
 using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
 using C4PHub.StorageAccount.Configurations;
@@ -51,8 +53,9 @@ namespace C4PHub.StorageAccount.Implementations
             TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
             TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
 
-            var c4pEntities = tableClient.QueryAsync<C4PEntity>(x => x.ExpiredDate.Date>=DateTime.Now.Date ,
-                100);
+            var now = DateTime.Now.Date;
+
+            var c4pEntities = tableClient.QueryAsync<C4PEntity>(x => x.ExpiredDate>= now);
 
             await foreach (var entity in c4pEntities)
             {

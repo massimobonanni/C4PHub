@@ -43,7 +43,7 @@ namespace C4PHub.Core.Entities
 
         public override string ToString()
         {
-            return $"Event Name: {EventName}\nEvent Location: {EventLocation}\nEvent Date: {EventDate}\nExpired Date: {ExpiredDate}\nUser Published: {UserPublished}";
+            return $"Event Name: {EventName}; Event Location: {EventLocation}; Event Date: {EventDate}; Expired Date: {ExpiredDate}; User Published: {UserPublished}";
         }
 
         public bool IsComplete()

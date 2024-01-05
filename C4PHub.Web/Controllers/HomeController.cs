@@ -1,6 +1,7 @@
 using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
 using C4PHub.Web.Models;
+using C4PHub.Web.Models.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Diagnostics;
@@ -21,11 +22,21 @@ namespace C4PHub.Web.Controllers
         }
 
         [ResponseCache(Duration = 60)]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
 
+        [ResponseCache(Duration = 60)]
+        public async Task<IActionResult> ActiveC4P()
+        {
+            var c4pList = await _persistance.GetOpenedC4PsAsync(default);
+            var model = new ActiveC4PModel();
+            model.C4PList = c4pList.OrderBy(c4p => c4p.ExpiredDate); ;
+            return View(model);
+        }
+
+        [ResponseCache(Duration = 3600)]
         public IActionResult Privacy()
         {
             return View();

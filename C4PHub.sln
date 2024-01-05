@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.StorageAccount", "C4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.OpenAI", "C4PHub.OpenAI\C4PHub.OpenAI.csproj", "{6D5D4330-583E-48DF-B581-0D10BF0A58EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.Auth", "C4PHub.Auth\C4PHub.Auth.csproj", "{D2638719-AC14-4128-A344-666D2184250F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.Auth", "C4PHub.Auth\C4PHub.Auth.csproj", "{D2638719-AC14-4128-A344-666D2184250F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.RssFunc", "C4PHub.RssFunc\C4PHub.RssFunc.csproj", "{92472F9E-FA53-49CA-B2F4-3E48F8AEADF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D2638719-AC14-4128-A344-666D2184250F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2638719-AC14-4128-A344-666D2184250F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2638719-AC14-4128-A344-666D2184250F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92472F9E-FA53-49CA-B2F4-3E48F8AEADF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92472F9E-FA53-49CA-B2F4-3E48F8AEADF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92472F9E-FA53-49CA-B2F4-3E48F8AEADF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92472F9E-FA53-49CA-B2F4-3E48F8AEADF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

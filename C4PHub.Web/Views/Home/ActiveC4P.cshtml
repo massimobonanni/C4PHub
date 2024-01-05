@@ -1,0 +1,35 @@
+﻿@using C4PHub.Core.Entities
+@model C4PHub.Web.Models.Home.ActiveC4PModel
+
+@{
+    ViewBag.Title = "Open C4Ps";
+}
+
+<h1>Open C4Ps</h1>
+<br />
+<div class="table">
+    @foreach (var item in Model.C4PList)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex align-items-center">
+                    <img src="~/img/c4p.png" alt="Image of a megaphone" width="30" class="me-3" />&nbsp;<a href="@item.Url" target="_blank"><h5>@item.EventName</h5></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    Event date @item.EventDate.ToString("dd/MM/yyyy")
+                </div>
+                <div class="col-8 text-wrap">
+                    @item.EventLocation
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp; (@item.DayToExpiration() days left)
+                </div>
+            </div>
+        </div>
+        <hr />
+    }
+</div>
