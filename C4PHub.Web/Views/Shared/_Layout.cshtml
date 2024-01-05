@@ -27,6 +27,12 @@
                         </li>
                     </ul>
                 </div>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <div class="text-truncate">
+                        <img src="~/img/user.png" width="20" />&nbsp;@User.Identity.Name
+                    </div>
+                }
             </div>
         </nav>
     </header>
