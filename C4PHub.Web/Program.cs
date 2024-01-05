@@ -3,12 +3,31 @@ using C4PHub.Core.Interfaces;
 using C4PHub.OpenAI.Implementations;
 using C4PHub.Sessionize.Implementations;
 using C4PHub.StorageAccount.Implementations;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile("appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
     .AddJsonFile("appsettings.local.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+builder.Services.AddRateLimiter(_ => _
+    .AddFixedWindowLimiter(policyName: "base", options =>
+    {
+        options.PermitLimit = 10;
+        options.Window = TimeSpan.FromSeconds(1);
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 2;
+    }));
+builder.Services.AddRateLimiter(_ => _
+    .AddFixedWindowLimiter(policyName: "newC4P", options =>
+    {
+        options.PermitLimit = 1;
+        options.Window = TimeSpan.FromSeconds(1);
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 2;
+    }));
 
 // Add services to the container.
 builder.Services.AddC4Pmanager();

@@ -1,10 +1,12 @@
 ﻿using C4PHub.Core.Interfaces;
 using C4PHub.Web.Models.C4P;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Xml;
 
 namespace C4PHub.Web.Controllers
 {
+    [EnableRateLimiting("newC4P")]
     public class C4PController : Controller
     {
         private readonly ILogger<HomeController> _logger;
