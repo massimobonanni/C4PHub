@@ -41,6 +41,10 @@ namespace C4PHub.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddModel model)
         {
+            model.IsUserAuthenticated = User.Identity.IsAuthenticated;
+            if (model.IsUserAuthenticated)
+                model.UserPublished = User.Identity.Name;
+
             if (ModelState.IsValid)
             {
                 var response = await _c4pManager.CreateC4PFromUrlAsync(model.Url, default);
