@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
-namespace C4PHub.StorageAccount.Utilities
+namespace C4PHub.Core.Utilities
 {
     internal static class StringUtility
     {
@@ -38,6 +34,8 @@ namespace C4PHub.StorageAccount.Utilities
 
         public static string ConvertToBase64(string input)
         {
+            if (string.IsNullOrEmpty(input))
+                return null;
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
         }
 

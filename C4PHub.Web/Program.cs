@@ -30,7 +30,7 @@ builder.Services.AddRateLimiter(_ => _
     }));
 
 // Add services to the container.
-builder.Services.AddC4Pmanager();
+builder.Services.AddC4PManager();
 builder.Services.AddScoped<IC4PPersistance, StorageAccountTablePersistance>();
 
 builder.Services.AddControllersWithViews();

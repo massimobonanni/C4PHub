@@ -34,7 +34,7 @@ namespace C4PHub.StorageAccount.Implementations
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
 
                 var c4pEntity = await tableClient.GetEntityIfExistsAsync<C4PEntity>(
-                    rowKey: c4p.GenerateUniqueID(),
+                    rowKey: c4p.Id,
                     partitionKey: c4p.GeneratePartitionKey()
                 );
                 return c4pEntity.HasValue;

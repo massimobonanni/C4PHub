@@ -7,7 +7,7 @@ namespace Microsoft.AspNetCore.Builder;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddC4Pmanager(this IServiceCollection services)
+    public static void AddC4PManager(this IServiceCollection services)
     {
         services.AddHttpClient();
         services.AddScoped<IUrlResolver, CoreUrlresolver>();
@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddKeyedScoped<IC4PExtractor, OpenAIC4PExtractor>("extractors");
         services.AddScoped<IC4PExtractorFactory, CoreExtractorFactory>();
         services.AddScoped<IC4PManager, CoreC4PManager>();
+        services.AddScoped<IFeedService, CoreFeedService>();
     }
 }
 

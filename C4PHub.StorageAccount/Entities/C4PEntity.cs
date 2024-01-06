@@ -14,7 +14,7 @@ namespace C4PHub.StorageAccount.Entities
         public C4PEntity(C4PInfo c4p)
         {
             PartitionKey = c4p.GeneratePartitionKey();
-            RowKey = c4p.GenerateUniqueID();
+            RowKey = c4p.Id;
             
             Url = c4p.Url;
             EventName = c4p.EventName;
@@ -65,6 +65,11 @@ namespace C4PHub.StorageAccount.Entities
         public string UserPublished { get; set; }
 
         /// <summary>
+        /// Gets or sets the date when the information was inserted.
+        /// </summary>
+        public DateTimeOffset InsertDate { get; set; } = DateTimeOffset.UtcNow;
+
+        /// <summary>
         /// Converts the C4PEntity object to a C4PInfo object.
         /// </summary>
         /// <returns>The converted C4PInfo object.</returns>
@@ -77,7 +82,8 @@ namespace C4PHub.StorageAccount.Entities
                 EventLocation = this.EventLocation,
                 EventDate = this.EventDate,
                 ExpiredDate = this.ExpiredDate,
-                UserPublished = this.UserPublished
+                UserPublished = this.UserPublished,
+                InsertDate= this.InsertDate
             };
         }
     }

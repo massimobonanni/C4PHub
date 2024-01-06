@@ -1,4 +1,5 @@
-﻿using System;
+﻿using C4PHub.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,14 @@ namespace C4PHub.Core.Entities
     /// </summary>
     public class C4PInfo
     {
+        /// <summary>
+        /// Gets or sets the ID of the event.
+        /// </summary>
+        public string Id
+        {
+            get => StringUtility.ConvertToBase64(Url);
+        }
+
         /// <summary>
         /// Gets or sets the URL of the event.
         /// </summary>
@@ -40,6 +49,11 @@ namespace C4PHub.Core.Entities
         /// Gets or sets the user who published the event.
         /// </summary>
         public string UserPublished { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date when the information was inserted.
+        /// </summary>
+        public DateTimeOffset InsertDate { get; set; } = DateTimeOffset.UtcNow;
 
         public override string ToString()
         {
