@@ -67,7 +67,7 @@ namespace C4PHub.OpenAI.Implementations
             Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
 
             var completions = response.Value;
-            logger.LogInformation($"OpenAI usage\n{completions.Usage}");
+            logger.LogInformation($"OpenAI usage: TotalTokens={0}, PromptTokens={1}, CompletionTokens={2}",completions.Usage.TotalTokens, completions.Usage.PromptTokens, completions.Usage.CompletionTokens);
 
             var mainChoice = completions.Choices.FirstOrDefault();
 

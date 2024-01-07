@@ -4,6 +4,7 @@ using C4PHub.OpenAI.Implementations;
 using C4PHub.Sessionize.Implementations;
 using C4PHub.StorageAccount.Implementations;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IC4PPersistance, StorageAccountTablePersistance>();
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
 
