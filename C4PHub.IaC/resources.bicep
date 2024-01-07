@@ -7,6 +7,7 @@ param environmentName string = 'c4phub'
 var dataStorageAccountName = toLower('${environmentName}datastore')
 var appServicePlanName = toLower('${environmentName}plan')
 var appServiceName = toLower('${environmentName}')
+var appServiceNameRss = toLower('${environmentName}feed')
 var openAiServiceName = toLower('${environmentName}openai')
 var logAnalyticsWorkspaceName = toLower('${environmentName}ws')
 var applicationInsightsName = toLower('${environmentName}ai')
@@ -104,6 +105,15 @@ resource appService 'Microsoft.Web/sites@2022-09-01' = {
   }
 }
 
+resource appServiceRss 'Microsoft.Web/sites@2022-09-01' = {
+  name: appServiceNameRss
+  location: location
+  kind: 'app'
+  properties: {
+    serverFarmId: appServicePlan.id
+  }
+}
+
 resource appSettings 'Microsoft.Web/sites/config@2022-09-01' = {
   name: 'appsettings'
   parent: appService
@@ -111,7 +121,19 @@ resource appSettings 'Microsoft.Web/sites/config@2022-09-01' = {
     'OpenAIService:Endpoint': openAiService.properties.endpoint
     'OpenAIService:Key': openAiService.listKeys().key1
     'OpenAIService:Modelname': 'mainModel'
-    'StorageAccount:ConnectionString': 'DefaultEndpointsProtocol=https;AccountName=${dataStorageAccount};EndpointSuffix=${environment().suffixes.storage};AccountKey=${dataStorageAccount.listKeys().keys[0].value}'
+    'StorageAccount:ConnectionString': 'DefaultEndpointsProtocol=https;AccountName=${dataStorageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${dataStorageAccount.listKeys().keys[0].value}'
+    'StorageAccount:TableName': 'c4p'
+    APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
+    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${applicationInsights.properties.InstrumentationKey}'
+
+  }
+}
+
+resource appSettingsRss 'Microsoft.Web/sites/config@2022-09-01' = {
+  name: 'appsettings'
+  parent: appServiceRss
+  properties: {
+    'StorageAccount:ConnectionString': 'DefaultEndpointsProtocol=https;AccountName=${dataStorageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${dataStorageAccount.listKeys().keys[0].value}'
     'StorageAccount:TableName': 'c4p'
     APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${applicationInsights.properties.InstrumentationKey}'

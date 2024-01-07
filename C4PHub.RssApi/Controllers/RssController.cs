@@ -1,9 +1,13 @@
 ﻿using C4PHub.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace C4PHub.Web.Controllers
 {
-    public class RssController : Controller
+    [EnableRateLimiting("base")]
+    [ApiController]
+    [Route("feed")]
+    public class RssController : ControllerBase
     {
         private readonly IFeedService _feed;
 
@@ -12,8 +16,9 @@ namespace C4PHub.Web.Controllers
             _feed = feed;
         }
 
+        [HttpGet(Name = "FeedRss")]
         [ResponseCache(Duration = 600)]
-        public async Task<IActionResult> Feed()
+        public async Task<ContentResult> Feed()
         {
             string host = Request.Scheme + "://" + Request.Host;
             string contentType = "application/xml";
