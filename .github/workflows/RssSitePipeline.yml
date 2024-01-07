@@ -9,7 +9,6 @@ on:
       - 'C4PHub.RssApi/**'
       - 'C4PHub.StorageAccount/*'
       - 'C4PHub.Core/**'
-      - 'C4PHub.OpenAi/**'
       - 'C4PHub.Sessionize/**'
     branches:
       - main
@@ -61,7 +60,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'c4phub'
+          app-name: 'c4phubfeed'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_RSSAPI_PROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_RSSAPI_PUBLISHPROFILE }}
