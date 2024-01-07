@@ -45,7 +45,7 @@ namespace C4PHub.Core.Implementations
             feed.Items = items;
 
             StringWriter sw = new StringWriter();
-            using (XmlWriter writer = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true }))
+            using (XmlWriter writer = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 }))
             {
                 feed.SaveAsRss20(writer);
             }
