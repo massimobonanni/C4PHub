@@ -61,8 +61,8 @@ namespace C4PHub.Core.Implementations
         {
             var item = new AtomEntry
             {
-                Title = HttpUtility.HtmlEncode(c4pInfo.EventName),
-                Description = HttpUtility.HtmlEncode($"Call for paper of the event '{c4pInfo.EventName}' which will be held on {c4pInfo.EventDate:dd/MM/yyyy} at {c4pInfo.EventLocation} expires on {c4pInfo.ExpiredDate:dd/MM/yyyy}"),
+                Title = c4pInfo.EventName),
+                Description = $"Call for paper of the event '{c4pInfo.EventName}' which will be held on {c4pInfo.EventDate:dd/MM/yyyy} at {c4pInfo.EventLocation} expires on {c4pInfo.ExpiredDate:dd/MM/yyyy}",
                 Id = c4pInfo.Id,
                 Published = c4pInfo.InsertDate,
                 LastUpdated = c4pInfo.InsertDate,
