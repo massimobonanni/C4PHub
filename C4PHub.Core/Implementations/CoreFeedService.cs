@@ -1,4 +1,6 @@
 ﻿using C4PHub.Core.Interfaces;
+using C4PHub.RssApi.Writers;
+using Microsoft.SyndicationFeed.Rss;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,9 @@ namespace C4PHub.Core.Implementations
 
             var feed = new SyndicationFeed("C4PHub", "C4PHub", new Uri(host), "C4PHub", DateTimeOffset.Now);
 
+            feed.Categories.Add(new SyndicationCategory("Public Speaking"));
+            feed.ImageUrl=new Uri("https://www.c4phub.com/img/c4phublogo.png");
+
             var items = new List<SyndicationItem>();
             foreach (var c4p in c4pList)
             {
@@ -44,7 +49,7 @@ namespace C4PHub.Core.Implementations
             }
             feed.Items = items;
 
-            StringWriter sw = new StringWriter();
+            var sw = new StringWriterWithEncoding(Encoding.UTF8);
             using (XmlWriter writer = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 }))
             {
                 feed.SaveAsRss20(writer);
