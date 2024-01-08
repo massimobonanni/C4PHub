@@ -31,7 +31,7 @@ namespace C4PHub.Core.Implementations
 
             StringWriter sw = new StringWriter();
             using (XmlWriter xmlWriter = XmlWriter.Create(sw,
-                new XmlWriterSettings() { Async = true, Indent = true }))
+                new XmlWriterSettings() { Async = true, Indent = true,Encoding= Encoding.ASCII }))
             {
                 var rss = new RssFeedWriter(xmlWriter);
                 await rss.WriteTitle("C4PHub");
@@ -54,7 +54,7 @@ namespace C4PHub.Core.Implementations
                     }
                 }
             }
-            return sw.ToString();
+            return sw.ToString().Trim();
         }
 
         private AtomEntry ToRssItem(C4PInfo c4pInfo, string host)
