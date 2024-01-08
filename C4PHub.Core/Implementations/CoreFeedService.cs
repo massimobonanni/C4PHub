@@ -35,8 +35,8 @@ namespace C4PHub.Core.Implementations
                     LastUpdatedTime = c4p.InsertDate,
                     PublishDate = c4p.InsertDate
                 };
-                item.Summary = SyndicationContent.CreatePlaintextContent($"Call for paper for the event '{c4p.EventName}' expires on {c4p.ExpiredDate:dd/MM/YYYY}");
-                item.Content = SyndicationContent.CreatePlaintextContent($"Call for paper of the event '{c4p.EventName}' which will be held on {c4p.EventDate:dd/MM/YYYY} at {c4p.EventLocation} expires on {c4p.ExpiredDate:dd/MM/YYYY}");
+                item.Summary = SyndicationContent.CreatePlaintextContent($"Call for paper for the event '{c4p.EventName}' expires on {c4p.ExpiredDate:dd/MM/yyyy}");
+                item.Content = SyndicationContent.CreatePlaintextContent($"Call for paper of the event '{c4p.EventName}' which will be held on {c4p.EventDate:dd/MM/yyyy} at {c4p.EventLocation} expires on {c4p.ExpiredDate:dd/MM/yyyy}");
                 item.Links.Add(new SyndicationLink(new Uri(c4p.Url)));
                 item.Authors.Add(new SyndicationPerson() { Name = c4p.UserPublished });
 
