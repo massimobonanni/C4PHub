@@ -7,6 +7,7 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
 
 namespace C4PHub.Core.Implementations
@@ -26,7 +27,7 @@ namespace C4PHub.Core.Implementations
 
             c4pList = c4pList.OrderByDescending(c => c.InsertDate);
 
-            var feed = new SyndicationFeed("C4PHub", "C4PHub", new Uri(host), "C4PHub", DateTimeOffset.Now);
+            var feed = new SyndicationFeed("C4PHub", "C4PHub", new Uri(host), "https://c4phub.com", DateTimeOffset.Now);
 
             feed.Categories.Add(new SyndicationCategory("Public Speaking"));
             feed.ImageUrl=new Uri("https://www.c4phub.com/img/c4phublogo.png");
@@ -40,8 +41,10 @@ namespace C4PHub.Core.Implementations
                     LastUpdatedTime = c4p.InsertDate,
                     PublishDate = c4p.InsertDate
                 };
-                item.Summary = SyndicationContent.CreatePlaintextContent($"Call for paper for the event '{c4p.EventName}' expires on {c4p.ExpiredDate:dd/MM/yyyy}");
-                item.Content = SyndicationContent.CreatePlaintextContent($"Call for paper of the event '{c4p.EventName}' which will be held on {c4p.EventDate:dd/MM/yyyy} at {c4p.EventLocation} expires on {c4p.ExpiredDate:dd/MM/yyyy}");
+                var summary= HttpUtility.HtmlEncode($"Call for paper for the event '{c4p.EventName}' expires on {c4p.ExpiredDate:dd/MM/yyyy}");
+                item.Summary = SyndicationContent.CreatePlaintextContent(summary );
+                var content= HttpUtility.HtmlEncode($"Call for paper of the event '{c4p.EventName}' which will be held on {c4p.EventDate:dd/MM/yyyy} at {c4p.EventLocation} expires on {c4p.ExpiredDate:dd/MM/yyyy}");
+                item.Content = SyndicationContent.CreatePlaintextContent(content);
                 item.Links.Add(new SyndicationLink(new Uri(c4p.Url)));
                 item.Authors.Add(new SyndicationPerson() { Name = c4p.UserPublished });
 
