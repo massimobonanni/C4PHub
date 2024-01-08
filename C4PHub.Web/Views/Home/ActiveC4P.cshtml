@@ -6,30 +6,38 @@
 }
 
 <h1>Open C4Ps</h1>
-<br />
-<div class="table">
-    @foreach (var item in Model.C4PList)
-    {
-        <div class="container">
-            <div class="row">
-                <div class="col d-flex align-items-center">
-                    <img src="~/img/c4p.png" alt="Image of a megaphone" width="30" class="me-3" />&nbsp;<a href="@item.Url" target="_blank"><h5>@item.EventName</h5></a>
+@if (Model.C4PList.Any())
+{
+    <div >The following C4Ps are still open for submissions:</div>
+    <br />
+    <div class="table">
+        @foreach (var item in Model.C4PList)
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col d-flex align-items-center">
+                        <img src="~/img/c4p.png" alt="Image of a megaphone" width="30" class="me-3" />&nbsp;<a href="@item.Url" target="_blank"><h5>@item.EventName</h5></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        Event date @item.EventDate.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="col-8 text-wrap">
+                        @item.EventLocation
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp; (@item.DayToExpiration() days left)
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-4">
-                    Event date @item.EventDate.ToString("dd/MM/yyyy")
-                </div>
-                <div class="col-8 text-wrap">
-                    @item.EventLocation
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp; (@item.DayToExpiration() days left)
-                </div>
-            </div>
-        </div>
-        <hr />
-    }
-</div>
+            <hr />
+        }
+    </div>
+}
+else
+{
+    <div class="alert-warning row">There are no C4Ps open at the moment!</div>
+}
