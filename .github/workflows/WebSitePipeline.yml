@@ -26,11 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set version in all AssemblyInfo.cs files
-        uses: secondbounce/assemblyinfo-update@v2
-        with:
-          version: '1.1.0'
-
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -40,6 +35,11 @@ jobs:
       - name: Build with dotnet
         run: dotnet build ${{ env.WEBAPP_ROOT }} --configuration Release
 
+      - name: Set version in all AssemblyInfo.cs files
+        uses: secondbounce/assemblyinfo-update@v2
+        with:
+          version: '1.1.0'
+          
       - name: dotnet publish
         run: dotnet publish ${{ env.WEBAPP_ROOT }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
