@@ -1,4 +1,5 @@
-﻿@inject IConfiguration Configuration
+﻿@using System.Reflection
+@inject IConfiguration Configuration
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +29,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="C4P" asp-action="Add">Add New C4P</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="@Configuration["RssFeedUrl"]" target="_blank"><img src="~/img/rss.png" alt="Rss feed" width="15" /></a>
+                            <a class="nav-link text-dark" src="@Configuration["RssFeedUrl"]" target="_blank"><img src="~/img/rss.png" alt="Rss feed" width="18" /></a>
                         </li>
                     </ul>
                 </div>
@@ -49,7 +50,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - C4PHub - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - C4PHub - v @Assembly.GetEntryAssembly().GetName().Version - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
