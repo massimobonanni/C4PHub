@@ -21,7 +21,7 @@ namespace C4PHub.Web.Controllers
         public async Task<ContentResult> Feed()
         {
             string host = Request.Scheme + "://" + Request.Host;
-            string contentType = "text/xml";
+            string contentType = "application/rss+xml; charset=utf-8";
 
             var feedXml = await _feed.GenerateFeedAsync(host,default);
 
