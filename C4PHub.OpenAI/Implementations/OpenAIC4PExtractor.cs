@@ -44,12 +44,13 @@ namespace C4PHub.OpenAI.Implementations
 
             HtmlWeb web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(c4p.Url);
-            var htmlBody= htmlDoc.DocumentNode.SelectSingleNode("//body");
+            var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//body");
 
             OpenAIClient client = new OpenAIClient(new Uri(this.config.Endpoint),
                 new AzureKeyCredential(this.config.Key));
 
-            var userMessage = Prompt.PromptMessage.Replace("<HTML Placeholder>", htmlBody.InnerHtml);
+            var userMessage = Prompt.PromptMessage.Replace("<HTML Placeholder>",
+                this.config.UseHtml ? htmlBody.InnerHtml : htmlBody.InnerText);
 
             var chatCompletionsOptions = new ChatCompletionsOptions()
             {
@@ -67,14 +68,14 @@ namespace C4PHub.OpenAI.Implementations
             Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
 
             var completions = response.Value;
-            logger.LogInformation($"OpenAI usage: TotalTokens={0}, PromptTokens={1}, CompletionTokens={2}",completions.Usage.TotalTokens, completions.Usage.PromptTokens, completions.Usage.CompletionTokens);
+            logger.LogInformation($"OpenAI usage: TotalTokens={0}, PromptTokens={1}, CompletionTokens={2}", completions.Usage.TotalTokens, completions.Usage.PromptTokens, completions.Usage.CompletionTokens);
 
             var mainChoice = completions.Choices.FirstOrDefault();
 
             if (mainChoice != null)
             {
                 var responseMessage = mainChoice.Message;
-                if (!string.IsNullOrWhiteSpace(responseMessage.Content) )
+                if (!string.IsNullOrWhiteSpace(responseMessage.Content))
                 {
                     var jsonContent = responseMessage.Content;
                     if (!jsonContent.StartsWith("{"))
@@ -82,14 +83,14 @@ namespace C4PHub.OpenAI.Implementations
                         jsonContent = $"{{{jsonContent}";
                     }
                     var entity = JsonSerializer.Deserialize<C4PEntity>(jsonContent);
-                    if (entity!=null)
+                    if (entity != null)
                     {
                         c4p.EventName = entity.eventName;
                         c4p.EventDate = DateTime.Parse(entity.eventDate);
                         c4p.EventLocation = entity.eventLocation;
                         c4p.ExpiredDate = DateTime.Parse(entity.c4pExpirationDate);
                     }
-                    
+
                 }
             }
             return result;

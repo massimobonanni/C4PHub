@@ -13,6 +13,7 @@ namespace C4PHub.OpenAI.Configurations
         public string Key { get; set; }
         public string Endpoint { get; set; }
         public string ModelName { get; set; }
+        public bool UseHtml { get; set; } = true;
 
         public static OpenAIServiceConfiguration Load(IConfiguration config)
         {
@@ -20,6 +21,8 @@ namespace C4PHub.OpenAI.Configurations
             retVal.Key = config[$"{ConfigRootName}:Key"];
             retVal.Endpoint = config[$"{ConfigRootName}:Endpoint"];
             retVal.ModelName = config[$"{ConfigRootName}:ModelName"];
+            if (config[$"{ConfigRootName}:UseHtml"] != null)
+                retVal.UseHtml = bool.Parse(config[$"{ConfigRootName}:UseHtml"]);
             return retVal;
         }
 
