@@ -28,6 +28,7 @@ namespace C4PHub.StorageAccount.Implementations
 
         public async Task<bool> ExistsC4PAsync(C4PInfo c4p, CancellationToken token = default)
         {
+            this._logger.LogInformation("Checking if C4P {0} exists", c4p);
             try
             {
                 TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
@@ -37,6 +38,7 @@ namespace C4PHub.StorageAccount.Implementations
                     rowKey: c4p.Id,
                     partitionKey: c4p.GeneratePartitionKey()
                 );
+                this._logger.LogInformation("C4P {0} exists: {1}", c4p, c4pEntity.HasValue);
                 return c4pEntity.HasValue;
             }
             catch (Exception ex)
@@ -67,12 +69,14 @@ namespace C4PHub.StorageAccount.Implementations
 
         public async Task<bool> SaveC4PAsync(C4PInfo c4p, CancellationToken token = default)
         {
+            this._logger.LogInformation("Saving C4P {0}", c4p);
             try
             {
                 TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
                 var c4pEntity = new C4PEntity(c4p);
                 var response = await tableClient.AddEntityAsync(c4pEntity);
+                this._logger.LogInformation("C4P {0} saved: {1}", c4p, !response.IsError);
                 return !response.IsError;
             }
             catch (Exception ex)

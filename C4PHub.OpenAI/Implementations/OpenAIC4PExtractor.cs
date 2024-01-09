@@ -39,6 +39,7 @@ namespace C4PHub.OpenAI.Implementations
         {
             if (c4p.Url == null)
                 throw new ArgumentException("Url is null");
+            this.logger.LogInformation($"Extracting C4P from {c4p.Url}");
 
             var result = true;
 
@@ -93,6 +94,7 @@ namespace C4PHub.OpenAI.Implementations
 
                 }
             }
+            this.logger.LogInformation($"Extracted C4P from {c4p.Url}: {c4p.EventName} - {c4p.EventDate} - {c4p.EventLocation} - {c4p.ExpiredDate}");
             return result;
         }
     }
