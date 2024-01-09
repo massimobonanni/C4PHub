@@ -28,13 +28,17 @@ namespace C4PHub.Sessionize.Implementations
 
         public Task<bool> CanManagedC4PAsync(C4PInfo c4p, CancellationToken token)
         {
+            this._logger.LogInformation("Checking if Sessionize page {0} can be managed.", c4p.Url);
             string url = c4p.Url;
             bool startsWithValidPrefix = _validUrlPrefixes.Any(prefix => url.StartsWith(prefix,StringComparison.InvariantCultureIgnoreCase));
+            this._logger.LogInformation("Sessionize page {0} can be managed: {1}.", c4p.Url, startsWithValidPrefix);
             return Task.FromResult(startsWithValidPrefix);
         }
 
         public async Task<bool> FillC4PAsync(C4PInfo c4p, CancellationToken token)
         {
+            this._logger.LogInformation("Extracting C4P information from Sessionize page {0}.", c4p.Url);
+
             HtmlWeb web = new HtmlWeb();
 
             try
@@ -70,6 +74,7 @@ namespace C4PHub.Sessionize.Implementations
                 var c4pClosingDateNode = c4pClosingDateRow.SelectSingleNode(".//div[2]/h2");
                 c4p.ExpiredDate = DateTime.Parse(c4pClosingDateNode.InnerText);
 
+                this._logger.LogInformation("C4P information extracted from Sessionize page {0}.", c4p.Url);
                 return true;
             }
             catch (Exception ex)

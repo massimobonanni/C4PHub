@@ -1,6 +1,7 @@
 ﻿using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace C4PHub.Core.Implementations
     public class CoreExtractorFactory : IC4PExtractorFactory
     {
         private readonly IEnumerable<IC4PExtractor> _c4pExtractors;
+        private readonly ILogger<CoreExtractorFactory> _logger;
 
-        public CoreExtractorFactory(IServiceProvider serviceProvider)
+        public CoreExtractorFactory(IServiceProvider serviceProvider,ILoggerFactory loggerFactory)
         {
             _c4pExtractors = serviceProvider.GetKeyedServices<IC4PExtractor>("extractors");
+            _logger = loggerFactory.CreateLogger<CoreExtractorFactory>();
         }
 
         /// <summary>

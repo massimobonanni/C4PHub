@@ -13,5 +13,10 @@ namespace C4PHub.Core.Responses
         public bool IsSuccess { get; set; }
 
         public string Error { get; set; }
+
+        public override string ToString()
+        {
+            return $"IsSuccess={IsSuccess}; Error={Error}";
+        }
     }
 }
