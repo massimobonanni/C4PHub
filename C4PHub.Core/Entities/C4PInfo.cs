@@ -17,7 +17,7 @@ namespace C4PHub.Core.Entities
         /// </summary>
         public string Id
         {
-            get => StringUtility.ConvertToBase64(Url);
+            get => StringUtility.GenerateIdFromString(Url);
         }
 
         /// <summary>
