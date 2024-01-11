@@ -13,64 +13,105 @@ namespace C4PHub.Core.Tests.Utilities
         [Fact]
         public void ConvertToBase64_ReturnsNull_WhenInputIsNull()
         {
-            // Arrange
             string input = null;
 
-            // Act
             var result = StringUtility.ConvertToBase64(input);
 
-            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void ConvertToBase64_ReturnsNull_WhenInputIsEmpty()
+        {
+            string input = string.Empty;
+
+            var result = StringUtility.ConvertToBase64(input);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void ConvertToBase64_ReturnsNull_WhenInputIsWhiteSpaces()
+        {
+            string input = " ";
+
+            var result = StringUtility.ConvertToBase64(input);
+
             Assert.Null(result);
         }
         #endregion ConvertToBase64
 
-        //[Theory]
-        //[MemberData(nameof(CarDataGenerator.GetCarDataWithDetails), MemberType = typeof(CarDataGenerator))]
-        //public async void Run_ShouldReturnOk_WhenPlateExist_WithDetailRequest(string plate, CarData carData, CarRentalsData carRentals)
-        //{ }
+        #region GenerateIdFromString
+        [Fact]
+        public void GenerateIdFromString_ReturnsNull_WhenInputIsNull()
+        {
+            string input = null;
 
-        //public static IEnumerable<object[]> GetCarDataWithoutDetails()
-        //{
-        //    yield return new object[]
-        //    {
-        //        "AA000BB",
-        //        new CarData()
-        //        {
-        //            Model="Fiat 500",
-        //            PickupLocation="LOCATION01",
-        //            CostPerHour=10.50M,
-        //            Currency="EUR",
-        //            CurrentRental=new Common.Models.RentalData()
-        //                {
-        //                    Id="11111",
-        //                    StartDate=DateTimeOffset.UtcNow.Subtract(TimeSpan.FromDays(2))
-        //                },
-        //            CurrentRentalState=Common.Models.CarRental.CarRentalState.Rented,
-        //            CurrentRenter= new Common.Models.RenterData()
-        //                {
-        //                    FirstName="John",
-        //                    LastName="Doe",
-        //                    Email="john.doe@mail.com"
-        //                },
-        //            CurrentState=CarState.Working
-        //        }
-        //    };
+            var result = StringUtility.GenerateIdFromString(input);
 
-        //    yield return new object[]
-        //    {
-        //        "GB424PV",
-        //        new CarData()
-        //        {
-        //            Model="Toyota CHR",
-        //            PickupLocation="LOCATION02",
-        //            CostPerHour=10.50M,
-        //            Currency="EUR",
-        //            CurrentRental=null,
-        //            CurrentRentalState=Common.Models.CarRental.CarRentalState.Free,
-        //            CurrentRenter= null,
-        //            CurrentState=CarState.Working
-        //        }
-        //    };
-        //}
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void GenerateIdFromString_ReturnsNull_WhenInputIsEmpty()
+        {
+            string input = string.Empty;
+
+            var result = StringUtility.GenerateIdFromString(input);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void GenerateIdFromString_ReturnsNull_WhenInputIsWhiteSpaces()
+        {
+            string input = " ";
+
+            var result = StringUtility.GenerateIdFromString(input);
+
+            Assert.Null(result);
+        }
+
+        [Theory]
+        [MemberData(nameof(DataGenerator.GetWebUrlToConsiderTheSame), MemberType = typeof(DataGenerator))]
+        public void GenerateIdFromString_ShouldGenerateSameId_WhenUrlsAreTheSame(string url1, string url2)
+        { 
+            var result1 = StringUtility.GenerateIdFromString(url1);
+            var result2 = StringUtility.GenerateIdFromString(url2);
+
+            Assert.Equal(result1, result2);
+        }
+        #endregion GenerateIdFromString
+
+
+
+        #region Private classes
+        private class DataGenerator
+        {
+            public static IEnumerable<object[]> GetWebUrlToConsiderTheSame()
+            {
+                yield return new object[]
+                {
+                    "https://www.website.com/evento1",
+                    "https://www.website.com/evento1/",
+                };
+                yield return new object[]
+                {
+                    "https://WWW.WEBSITE.COM/evento1",
+                    "https://www.website.com/evento1",
+                };
+                yield return new object[]
+                {
+                    "https://WWW.WEBSITE.COM/evento1",
+                    "https://www.website.com/evento1/",
+                };
+                yield return new object[]
+                {
+                    "https://www.website.com/evento1",
+                    "https://www.website.com/evento1",
+                };
+            }
+        }
+        #endregion Private classes
     }
 }
