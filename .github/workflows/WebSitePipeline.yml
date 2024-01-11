@@ -12,6 +12,7 @@ on:
       - 'C4PHub.OpenAi/**'
       - 'C4PHub.Sessionize/**'
       - 'C4PHub.Auth/**'
+      - 'Tests/C4PHub.Core.Tests/**'
     branches:
       - main
   workflow_dispatch:
@@ -47,6 +48,14 @@ jobs:
           
       - name: Build with dotnet
         run: dotnet build ${{ env.WEBAPP_ROOT }} --configuration Release
+
+      - name: Core classes tests
+        uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: Tests/C4PHub.Core.Tests
+          report_name: SCR_Common_Test_Report
+          report_title: C4PHub.Core Test Report
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: dotnet publish
         run: dotnet publish ${{ env.WEBAPP_ROOT }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
