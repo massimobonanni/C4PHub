@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.OpenAI", "C4PHub.Ope
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.Auth", "C4PHub.Auth\C4PHub.Auth.csproj", "{D2638719-AC14-4128-A344-666D2184250F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.RssApi", "C4PHub.RssApi\C4PHub.RssApi.csproj", "{2A1767EB-1262-4BCD-9CC5-8396CA2F450C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.RssApi", "C4PHub.RssApi\C4PHub.RssApi.csproj", "{2A1767EB-1262-4BCD-9CC5-8396CA2F450C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.Core.Tests", "Tests\C4PHub.Core.Tests\C4PHub.Core.Tests.csproj", "{F4548AB9-231E-4ED3-978A-3ECA6A7118FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D3A8844B-BA3F-44FE-9391-61220467A812}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +55,16 @@ Global
 		{2A1767EB-1262-4BCD-9CC5-8396CA2F450C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A1767EB-1262-4BCD-9CC5-8396CA2F450C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A1767EB-1262-4BCD-9CC5-8396CA2F450C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4548AB9-231E-4ED3-978A-3ECA6A7118FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4548AB9-231E-4ED3-978A-3ECA6A7118FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4548AB9-231E-4ED3-978A-3ECA6A7118FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4548AB9-231E-4ED3-978A-3ECA6A7118FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4548AB9-231E-4ED3-978A-3ECA6A7118FA} = {D3A8844B-BA3F-44FE-9391-61220467A812}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4ABEADD-97AC-4A5F-8C83-6F179B514497}
