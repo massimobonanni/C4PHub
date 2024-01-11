@@ -13,13 +13,15 @@ namespace C4PHub.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IC4PManager _c4pManager;
         private readonly IC4PPersistance _persistance;
+        private readonly INotificationService _notificationService;
 
         public C4PController(IC4PManager c4pManager,
-            ILogger<HomeController> logger, IC4PPersistance persistance)
+            ILogger<HomeController> logger, IC4PPersistance persistance, INotificationService notificationService)
         {
             _logger = logger;
             _c4pManager = c4pManager;
             _persistance = persistance;
+            _notificationService = notificationService;
         }
 
 
@@ -117,6 +119,7 @@ namespace C4PHub.Web.Controllers
             {
                 if (await _persistance.SaveC4PAsync(c4p, default))
                 {
+                    await _notificationService.SendNotificationAsync(c4p, default);
                     return true;
                 }
                 else

@@ -1,5 +1,6 @@
 ﻿using C4PHub.Core.Implementations;
 using C4PHub.Core.Interfaces;
+using C4PHub.EventGrid.Implementations;
 using C4PHub.OpenAI.Implementations;
 using C4PHub.Sessionize.Implementations;
 
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IC4PExtractorFactory, CoreExtractorFactory>();
         services.AddScoped<IC4PManager, CoreC4PManager>();
         services.AddScoped<IFeedService, CoreFeedService>();
+        services.AddScoped<INotificationService, EventGridNotificationService>();
     }
 }
 

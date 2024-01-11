@@ -7,14 +7,14 @@ namespace C4PHub.Core.Utilities
     {
         public static string ConvertToBase64(string input)
         {
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrWhiteSpace(input))
                 return null;
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
         }
 
         public static string GenerateIdFromString(string input)
         {
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrWhiteSpace(input))
                 return null;
             input = input.ToLower().Trim();
             if (input.EndsWith("/"))
