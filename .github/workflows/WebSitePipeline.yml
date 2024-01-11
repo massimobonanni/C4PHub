@@ -12,6 +12,7 @@ on:
       - 'C4PHub.OpenAi/**'
       - 'C4PHub.Sessionize/**'
       - 'C4PHub.Auth/**'
+      - 'C4PHub.EventGrid/**'
       - 'Tests/C4PHub.Core.Tests/**'
     branches:
       - main
