@@ -2,6 +2,7 @@ using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
 using C4PHub.Web.Models;
 using C4PHub.Web.Models.Home;
+using C4PHub.Web.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Diagnostics;
@@ -45,7 +46,10 @@ namespace C4PHub.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { 
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Message = ErrorMessagesUtility.GetErrorMessage()
+            });
         }
     }
 }
