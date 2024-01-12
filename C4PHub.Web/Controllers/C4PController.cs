@@ -81,8 +81,8 @@ namespace C4PHub.Web.Controllers
                             completeModel.Url = model.Url;
                             completeModel.EventName = c4p.EventName;
                             completeModel.EventLocation = c4p.EventLocation;
-                            completeModel.EventDate = c4p.EventDate;
-                            completeModel.ExpiredDate = c4p.ExpiredDate;
+                            completeModel.EventDate = c4p.EventDate!=default ? c4p.EventDate : DateTime.Now;
+                            completeModel.ExpiredDate = c4p.ExpiredDate != default ? c4p.ExpiredDate : DateTime.Now;
                             return View("Complete", completeModel);
                         }
                     }
