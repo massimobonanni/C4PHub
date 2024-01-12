@@ -47,7 +47,7 @@ namespace C4PHub.OpenAI.Implementations
             var htmlDoc = await web.LoadFromWebAsync(c4p.Url);
             var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//body");
 
-            this.logger.LogInformation("Extracting from body {0}", htmlBody);
+            this.logger.LogInformation("Extracting from body {0}", htmlBody.InnerHtml);
 
             OpenAIClient client = new OpenAIClient(new Uri(this.config.Endpoint),
                 new AzureKeyCredential(this.config.Key));
