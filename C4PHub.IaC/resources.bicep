@@ -11,6 +11,7 @@ var appServiceNameRss = toLower('${environmentName}feed')
 var openAiServiceName = toLower('${environmentName}openai')
 var logAnalyticsWorkspaceName = toLower('${environmentName}ws')
 var applicationInsightsName = toLower('${environmentName}ai')
+var eventGridTopicName = toLower('${environmentName}topic')
 
 //------------------------------------------------------------
 // Create data storage account and table for C4Ps
@@ -140,4 +141,18 @@ resource appSettingsRss 'Microsoft.Web/sites/config@2022-09-01' = {
 
   }
 }
+//------------------------------------------------------------
+
+//------------------------------------------------------------
+// EventGrid custom topic
+//------------------------------------------------------------
+resource eventGridTopic 'Microsoft.EventGrid/topics@2021-06-01-preview' = {
+  name: eventGridTopicName
+  location: location
+  sku: {
+    name: 'Basic'
+  }
+}
+
+
 //------------------------------------------------------------
