@@ -118,20 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PromptMessage" xml:space="preserve">
-    <value>Extract information from HTML:  
+    <value>Extract information Call for paper information from HTML:  
 "&lt;HTML Placeholder&gt;"
 
-Extract Call for paper information in the following JSON format:  
+The information must be returned in the following JSON format:  
 { 
    "c4pUrl":"", 
    "eventName":"",  
    "eventDate":"dd/MM/YYYY",  
-   "c4pExpirationDate":"dd/MM/YYYY HH:mm",  
+   "c4pExpirationDate":"dd/MM/YYYY",  
    "eventLocation":""  
 }  
 
 Return only the JSON.
-If a field is not present in the letter, it must not be present in the JSON.
+If a field is not present in the HTML, it must not be present in the JSON.
 If you cannot extract data, return an empty string.
 
 {</value>

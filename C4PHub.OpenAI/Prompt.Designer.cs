@@ -61,20 +61,20 @@ namespace C4PHub.OpenAI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extract information from HTML:  
+        ///   Looks up a localized string similar to Extract information Call for paper information from HTML:  
         ///&quot;&lt;HTML Placeholder&gt;&quot;
         ///
-        ///Extract Call for paper information in the following JSON format:  
+        ///The information must be returned in the following JSON format:  
         ///{ 
         ///   &quot;c4pUrl&quot;:&quot;&quot;, 
         ///   &quot;eventName&quot;:&quot;&quot;,  
         ///   &quot;eventDate&quot;:&quot;dd/MM/YYYY&quot;,  
-        ///   &quot;c4pExpirationDate&quot;:&quot;dd/MM/YYYY HH:mm&quot;,  
+        ///   &quot;c4pExpirationDate&quot;:&quot;dd/MM/YYYY&quot;,  
         ///   &quot;eventLocation&quot;:&quot;&quot;  
         ///}  
         ///
         ///Return only the JSON.
-        ///If a field is not present in the letter, it must not be present in the JSON.
+        ///If a field is not present in the HTML, it must not be present in the JSON.
         ///If you cannot extract data, return an empty string.
         ///
         ///{.
