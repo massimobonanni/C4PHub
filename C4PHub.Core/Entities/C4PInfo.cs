@@ -38,12 +38,12 @@ namespace C4PHub.Core.Entities
         /// <summary>
         /// Gets or sets the date of the event.
         /// </summary>
-        public DateTime EventDate { get; set; }
+        public DateTime EventDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Gets or sets the expired date of the event.
         /// </summary>
-        public DateTime ExpiredDate { get; set; }
+        public DateTime ExpiredDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Gets or sets the user who published the event.
