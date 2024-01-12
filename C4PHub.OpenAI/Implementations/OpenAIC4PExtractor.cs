@@ -39,13 +39,15 @@ namespace C4PHub.OpenAI.Implementations
         {
             if (c4p.Url == null)
                 throw new ArgumentException("Url is null");
-            this.logger.LogInformation($"Extracting C4P from {c4p.Url}");
+            this.logger.LogInformation("Extracting C4P from {0}", c4p.Url);
 
             var result = true;
 
             HtmlWeb web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(c4p.Url);
             var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//body");
+
+            this.logger.LogInformation("Extracting from body {0}", htmlBody);
 
             OpenAIClient client = new OpenAIClient(new Uri(this.config.Endpoint),
                 new AzureKeyCredential(this.config.Key));
@@ -87,14 +89,22 @@ namespace C4PHub.OpenAI.Implementations
                     if (entity != null)
                     {
                         c4p.EventName = entity.eventName;
-                        c4p.EventDate = DateTime.Parse(entity.eventDate);
+                        if (!string.IsNullOrWhiteSpace(entity.eventDate))
+                        {
+                            if (DateTime.TryParse(entity.eventDate, out var eventDate))
+                                c4p.EventDate = eventDate;
+                        }
                         c4p.EventLocation = entity.eventLocation;
-                        c4p.ExpiredDate = DateTime.Parse(entity.c4pExpirationDate);
+                        if (!string.IsNullOrWhiteSpace(entity.c4pExpirationDate))
+                        {
+                            if (DateTime.TryParse(entity.c4pExpirationDate, out var expiredDate))
+                                c4p.ExpiredDate = expiredDate;
+                        }
                     }
 
                 }
             }
-            this.logger.LogInformation($"Extracted C4P from {c4p.Url}: {c4p.EventName} - {c4p.EventDate} - {c4p.EventLocation} - {c4p.ExpiredDate}");
+            this.logger.LogInformation($"Extracted C4P from {0}: {1} - {2} - {3} - {4}",c4p.Url, c4p.EventName,c4p.EventDate,c4p.EventLocation,c4p.ExpiredDate);
             return result;
         }
     }
