@@ -15,6 +15,9 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using C4PHub.OpenAI.Entities;
 using HtmlAgilityPack;
+using Microsoft.SemanticKernel;
+using System.Net;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 namespace C4PHub.OpenAI.Implementations
 {
@@ -42,70 +45,68 @@ namespace C4PHub.OpenAI.Implementations
             this.logger.LogInformation("Extracting C4P from {0}", c4p.Url);
 
             var result = true;
+            HtmlNode htmlBody = await ExtractBodyFromUrl(c4p);
 
+            var kernelBuilder = Kernel.CreateBuilder()
+                .AddAzureOpenAIChatCompletion(this.config.ModelName, this.config.Endpoint, this.config.Key)
+                .Build();
+
+            var extractorFunction = kernelBuilder.CreateFunctionFromPrompt(Prompt.PromptMessage,
+               new OpenAIPromptExecutionSettings()
+               {
+                   ChatSystemPrompt = Prompt.SystemMessage,
+                   Temperature = 0.0f,
+                   MaxTokens = 10000
+               });
+
+            KernelArguments arguments = new KernelArguments()
+            {
+                {"input", this.config.UseHtml ? htmlBody.InnerHtml : htmlBody.InnerText}
+            };
+
+            var response = await kernelBuilder.InvokeAsync(extractorFunction, arguments);
+
+            var responseMessage = response.GetValue<string>();
+            if (!string.IsNullOrWhiteSpace(responseMessage))
+            {
+                DeserializeResponse(c4p, responseMessage);
+            }
+            this.logger.LogInformation($"Extracted C4P from {0}: {1} - {2} - {3} - {4}", c4p.Url, c4p.EventName, c4p.EventDate, c4p.EventLocation, c4p.ExpiredDate);
+            return result;
+        }
+
+        private void DeserializeResponse(C4PInfo c4p, string responseMessage)
+        {
+            if (!responseMessage.StartsWith("{"))
+            {
+                responseMessage = $"{{{responseMessage}";
+            }
+            var entity = JsonSerializer.Deserialize<C4PEntity>(responseMessage);
+            if (entity != null)
+            {
+                c4p.EventName = entity.eventName;
+                if (!string.IsNullOrWhiteSpace(entity.eventDate))
+                {
+                    if (DateTime.TryParse(entity.eventDate, out var eventDate))
+                        c4p.EventDate = eventDate;
+                }
+                c4p.EventLocation = entity.eventLocation;
+                if (!string.IsNullOrWhiteSpace(entity.c4pExpirationDate))
+                {
+                    if (DateTime.TryParse(entity.c4pExpirationDate, out var expiredDate))
+                        c4p.ExpiredDate = expiredDate;
+                }
+            }
+        }
+
+        private async Task<HtmlNode> ExtractBodyFromUrl(C4PInfo c4p)
+        {
             HtmlWeb web = new HtmlWeb();
             var htmlDoc = await web.LoadFromWebAsync(c4p.Url);
             var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//body");
 
             this.logger.LogInformation("Extracting from body {0}", htmlBody.InnerHtml);
-
-            OpenAIClient client = new OpenAIClient(new Uri(this.config.Endpoint),
-                new AzureKeyCredential(this.config.Key));
-
-            var userMessage = Prompt.PromptMessage.Replace("<HTML Placeholder>",
-                this.config.UseHtml ? htmlBody.InnerHtml : htmlBody.InnerText);
-
-            var chatCompletionsOptions = new ChatCompletionsOptions()
-            {
-                Messages =
-                {
-                         new ChatRequestSystemMessage(Prompt.SystemMessage),
-                         new ChatRequestUserMessage(userMessage)
-                     },
-                Temperature = 0.0f,
-                MaxTokens = 10000,
-                ChoiceCount = 1,
-                DeploymentName = config.ModelName
-            };
-
-            Response<ChatCompletions> response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
-
-            var completions = response.Value;
-            logger.LogInformation($"OpenAI usage: TotalTokens={0}, PromptTokens={1}, CompletionTokens={2}", completions.Usage.TotalTokens, completions.Usage.PromptTokens, completions.Usage.CompletionTokens);
-
-            var mainChoice = completions.Choices.FirstOrDefault();
-
-            if (mainChoice != null)
-            {
-                var responseMessage = mainChoice.Message;
-                if (!string.IsNullOrWhiteSpace(responseMessage.Content))
-                {
-                    var jsonContent = responseMessage.Content;
-                    if (!jsonContent.StartsWith("{"))
-                    {
-                        jsonContent = $"{{{jsonContent}";
-                    }
-                    var entity = JsonSerializer.Deserialize<C4PEntity>(jsonContent);
-                    if (entity != null)
-                    {
-                        c4p.EventName = entity.eventName;
-                        if (!string.IsNullOrWhiteSpace(entity.eventDate))
-                        {
-                            if (DateTime.TryParse(entity.eventDate, out var eventDate))
-                                c4p.EventDate = eventDate;
-                        }
-                        c4p.EventLocation = entity.eventLocation;
-                        if (!string.IsNullOrWhiteSpace(entity.c4pExpirationDate))
-                        {
-                            if (DateTime.TryParse(entity.c4pExpirationDate, out var expiredDate))
-                                c4p.ExpiredDate = expiredDate;
-                        }
-                    }
-
-                }
-            }
-            this.logger.LogInformation($"Extracted C4P from {0}: {1} - {2} - {3} - {4}",c4p.Url, c4p.EventName,c4p.EventDate,c4p.EventLocation,c4p.ExpiredDate);
-            return result;
+            return htmlBody;
         }
     }
 }

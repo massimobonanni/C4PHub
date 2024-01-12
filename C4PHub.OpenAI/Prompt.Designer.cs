@@ -61,8 +61,8 @@ namespace C4PHub.OpenAI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extract information Call for paper information from HTML:  
-        ///&quot;&lt;HTML Placeholder&gt;&quot;
+        ///   Looks up a localized string similar to Extract information about the  Call for paper from the HTML in the triple backticks :  
+        ///`HTML: ``{{$input}}```
         ///
         ///The information must be returned in the following JSON format:  
         ///{ 
