@@ -4,7 +4,7 @@
 name: Build and deploy Web Site
 
 on:
-  push:
+#  push:
 #    paths:
 #      - 'C4PHub.Web/**'
 #      - 'C4PHub.StorageAccount/*'
