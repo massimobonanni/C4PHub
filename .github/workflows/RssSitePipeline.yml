@@ -4,16 +4,15 @@
 name: Build and deploy RSS Feed Site
 
 on:
-  push:
-    paths:
-      - 'C4PHub.RssApi/**'
-      - 'C4PHub.StorageAccount/*'
-      - 'C4PHub.Core/**'
-      - 'C4PHub.Sessionize/**'
-    branches:
-      - main
-  
-  workflow_dispatch:
+#  push:
+#    paths:
+#      - 'C4PHub.RssApi/**'
+#      - 'C4PHub.StorageAccount/*'
+#      - 'C4PHub.Core/**'
+#      - 'C4PHub.Sessionize/**'
+#    branches:
+#     - main
+ workflow_dispatch:
 
 env:
     WEBAPP_ROOT: ${{ github.workspace }}/C4PHub.RssApi
@@ -42,6 +41,7 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+          retention-days: 5
 
   deploy:
     runs-on: windows-latest
