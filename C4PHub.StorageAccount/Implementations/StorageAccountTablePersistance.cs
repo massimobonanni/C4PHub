@@ -20,10 +20,28 @@ namespace C4PHub.StorageAccount.Implementations
         private readonly ILogger<StorageAccountTablePersistance> _logger;
         private readonly StorageAccountPersistanceConfiguration _config;
 
-        public StorageAccountTablePersistance(ILogger<StorageAccountTablePersistance> logger,IConfiguration config)
+        public StorageAccountTablePersistance(ILogger<StorageAccountTablePersistance> logger, IConfiguration config)
         {
             _logger = logger;
             _config = StorageAccountPersistanceConfiguration.Load(config);
+        }
+
+        public async Task<bool> DeleteC4PAsync(C4PInfo c4p, CancellationToken token = default)
+        {
+            this._logger.LogInformation("Deleting C4P {0}", c4p);
+            try
+            {
+                TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
+                TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
+                var response = await tableClient.DeleteEntityAsync(c4p.GeneratePartitionKey(), c4p.Id, cancellationToken: token);
+                this._logger.LogInformation("C4P {0} deleted: {1}", c4p, !response.IsError);
+                return !response.IsError;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, "Error during deleting C4P {0}", c4p);
+                throw;
+            }
         }
 
         public async Task<bool> ExistsC4PAsync(C4PInfo c4p, CancellationToken token = default)
@@ -35,9 +53,8 @@ namespace C4PHub.StorageAccount.Implementations
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
 
                 var c4pEntity = await tableClient.GetEntityIfExistsAsync<C4PEntity>(
-                    rowKey: c4p.Id,
-                    partitionKey: c4p.GeneratePartitionKey()
-                );
+                    rowKey: c4p.Id, partitionKey: c4p.GeneratePartitionKey(), cancellationToken: token);
+
                 this._logger.LogInformation("C4P {0} exists: {1}", c4p, c4pEntity.HasValue);
                 return c4pEntity.HasValue;
             }
@@ -46,6 +63,25 @@ namespace C4PHub.StorageAccount.Implementations
                 this._logger.LogError(ex, "Error during retrieving C4P {0}", c4p);
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<C4PInfo>> GetClosedC4PsAsync(CancellationToken token = default)
+        {
+            var resultList = new List<C4PInfo>();
+
+            TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
+            TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
+
+            var now = DateTime.Now.Date;
+
+            var c4pEntities = tableClient.QueryAsync<C4PEntity>(x => x.ExpiredDate < now, cancellationToken: token);
+
+            await foreach (var entity in c4pEntities)
+            {
+                resultList.Add(entity.ToC4PInfo());
+            }
+
+            return resultList;
         }
 
         public async Task<IEnumerable<C4PInfo>> GetOpenedC4PsAsync(CancellationToken token = default)
@@ -57,13 +93,13 @@ namespace C4PHub.StorageAccount.Implementations
 
             var now = DateTime.Now.Date;
 
-            var c4pEntities = tableClient.QueryAsync<C4PEntity>(x => x.ExpiredDate>= now);
+            var c4pEntities = tableClient.QueryAsync<C4PEntity>(x => x.ExpiredDate >= now, cancellationToken: token);
 
             await foreach (var entity in c4pEntities)
             {
                 resultList.Add(entity.ToC4PInfo());
             }
-            
+
             return resultList;
         }
 
@@ -75,13 +111,13 @@ namespace C4PHub.StorageAccount.Implementations
                 TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
                 var c4pEntity = new C4PEntity(c4p);
-                var response = await tableClient.AddEntityAsync(c4pEntity);
+                var response = await tableClient.AddEntityAsync(c4pEntity, cancellationToken: token);
                 this._logger.LogInformation("C4P {0} saved: {1}", c4p, !response.IsError);
                 return !response.IsError;
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error during saving C4P {0}",c4p);
+                this._logger.LogError(ex, "Error during saving C4P {0}", c4p);
                 throw;
             }
         }

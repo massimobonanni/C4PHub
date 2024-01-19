@@ -41,5 +41,13 @@ namespace C4PHub.Core.Interfaces
         /// <param name="token">The cancellation token.</param>
         /// <returns>The task result contains a collection of closed C4PInfo objects.</returns>
         Task<IEnumerable<C4PInfo>> GetClosedC4PsAsync(CancellationToken token = default);
+
+        /// <summary>
+        /// Deletes a C4PInfo object asynchronously.
+        /// </summary>
+        /// <param name="c4p">The C4PInfo object to delete.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains a boolean value indicating if the C4PInfo object was deleted successfully.</returns>
+        Task<bool> DeleteC4PAsync(C4PInfo c4p, CancellationToken token = default);
     }
 }
