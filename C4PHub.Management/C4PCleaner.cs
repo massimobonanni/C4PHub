@@ -4,17 +4,17 @@ using Microsoft.Extensions.Logging;
 
 namespace C4PHub.Management
 {
-    public class Function1
+    public class C4PCleaner
     {
         private readonly ILogger _logger;
 
-        public Function1(ILoggerFactory loggerFactory)
+        public C4PCleaner(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<Function1>();
+            _logger = loggerFactory.CreateLogger<C4PCleaner>();
         }
 
-        [Function("Function1")]
-        public void Run([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer)
+        [Function("C4PCleaner")]
+        public void Run([TimerTrigger("%C4PCleanerCron%")] TimerInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             
