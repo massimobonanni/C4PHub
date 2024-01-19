@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace C4PHub.Core.Interfaces
 {
+    /// <summary>
+    /// Represents a service for generating feeds.
+    /// </summary>
     public interface IFeedService
     {
-        Task<string> GenerateFeedAsync(string host,CancellationToken token);
+        /// <summary>
+        /// Generates a feed asynchronously.
+        /// </summary>
+        /// <param name="host">The host of the feed.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the generated feed as a string.</returns>
+        Task<string> GenerateFeedAsync(string host, CancellationToken token);
     }
 }

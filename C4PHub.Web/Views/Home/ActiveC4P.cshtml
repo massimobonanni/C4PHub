@@ -8,7 +8,7 @@
 <h1>Open C4Ps</h1>
 @if (Model.C4PList.Any())
 {
-    <div >The following C4Ps are still open for submissions:</div>
+    <div>The following C4Ps are still open for submissions:</div>
     <br />
     <div class="table">
         @foreach (var item in Model.C4PList)
@@ -29,7 +29,20 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp; (@item.DayToExpiration() days left)
+                        C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp;
+                        @if (item.DayToExpiration() == 1)
+                        {
+                            <span class="badge bg-danger">Last day!</span>
+                        }
+                        else if (item.DayToExpiration() <= 7)
+                        {
+                            <span class="badge bg-warning">@item.DayToExpiration() days left</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light">@item.DayToExpiration() days left</span>
+                        }
+
                     </div>
                 </div>
             </div>
