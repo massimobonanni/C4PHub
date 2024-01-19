@@ -1,0 +1,91 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Management Functions
+
+on:
+#  push:
+#    paths:
+#      - 'C4PHub.StorageAccount/*'
+#      - 'C4PHub.Core/**'
+#      - 'C4PHub.Management/**'
+#    branches:
+#      - main
+  workflow_dispatch:
+
+env:
+    AZFUNC_ROOT: ${{ github.workspace }}/C4PHub.Management
+    FUNCTION_APP_NAME: "c4phubmanagement"
+    BUILD_OUTPUT_PATH: ${{ github.workspace }}/build
+    BUILD_PACKAGE_NAME : "c4phubmanagement.zip"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+          include-prerelease: true
+
+      - name: retrieve datetime from action
+        id: getDate
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: "1.YYYY.MMDD.0"
+
+      - name: Set version in all AssemblyInfo.cs files
+        uses: secondbounce/assemblyinfo-update@v2
+        with:
+          version: ${{ steps.getDate.outputs.time }}
+          directory: '${{ env.AZFUNC_ROOT }}'
+          recursive: false
+          
+      - name: Build with dotnet
+        run: dotnet build ${{ env.AZFUNC_ROOT }} --configuration Release
+
+      - name: Core classes tests
+        uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: Tests/C4PHub.Core.Tests
+          report_name: SCR_Common_Test_Report
+          report_title: C4PHub.Core Test Report
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish
+        run: |
+          publishfolder="${{ github.workspace }}/managementfunctions"
+          mkdir $publishfolder
+          cd $publishfolder
+          dotnet publish ${{ env.AZFUNC_ROOT }} --configuration Release --output .
+          mkdir ${{ env.BUILD_OUTPUT_PATH }}
+          zip -r ${{ env.BUILD_OUTPUT_PATH }}/${{ env.BUILD_PACKAGE_NAME }} .
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .functions-app
+          path: ${{ env.BUILD_OUTPUT_PATH }}/${{ env.BUILD_PACKAGE_NAME }} 
+          retention-days: 5
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .functions-app
+      
+      - name: Deploy Management Functions
+        uses: Azure/functions-action@v1.4.7
+        with:
+          app-name: ${{ env.FUNCTION_APP_NAME }}
+          package: .functions-app
+          publish-profile: ${{ secrets.MANAGEMENTFUNCTIONS_PUBLISHPROFILE }}
+    
