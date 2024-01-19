@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.Core.Tests", "Tests\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D3A8844B-BA3F-44FE-9391-61220467A812}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.EventGrid", "C4PHub.EventGrid\C4PHub.EventGrid.csproj", "{3A60A0BC-77FE-4DA7-8356-F1EE7E2AFD98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C4PHub.EventGrid", "C4PHub.EventGrid\C4PHub.EventGrid.csproj", "{3A60A0BC-77FE-4DA7-8356-F1EE7E2AFD98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C4PHub.Management", "C4PHub.Management\C4PHub.Management.csproj", "{2A784017-504D-411C-B685-A7C5E881D9AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{3A60A0BC-77FE-4DA7-8356-F1EE7E2AFD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A60A0BC-77FE-4DA7-8356-F1EE7E2AFD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A60A0BC-77FE-4DA7-8356-F1EE7E2AFD98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A784017-504D-411C-B685-A7C5E881D9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A784017-504D-411C-B685-A7C5E881D9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A784017-504D-411C-B685-A7C5E881D9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A784017-504D-411C-B685-A7C5E881D9AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
