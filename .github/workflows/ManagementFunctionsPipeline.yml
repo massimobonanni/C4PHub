@@ -45,7 +45,7 @@ jobs:
 
       - name: Publish
         run: |
-          publishfolder="${{ github.workspace }}\output"
+          publishfolder="${{ github.workspace }}/output"
           mkdir $publishfolder
           cd $publishfolder
           dotnet publish ${{ env.AZFUNC_ROOT }} --configuration Release --output .
@@ -56,11 +56,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: .functions-app
-          path: ${{ env.BUILD_OUTPUT_PATH }}/${{ env.BUILD_PACKAGE_NAME }} 
+          path: ${{ env.BUILD_OUTPUT_PATH }}
           retention-days: 5
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
 
     steps:
@@ -68,11 +68,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .functions-app
+          path:  ${{ env.BUILD_OUTPUT_PATH }}
       
       - name: Deploy Management Functions
         uses: Azure/functions-action@v1.4.7
         with:
           app-name: ${{ env.FUNCTION_APP_NAME }}
-          package: .functions-app
+          package: ${{ env.BUILD_OUTPUT_PATH }}/${{ env.BUILD_PACKAGE_NAME }}
           publish-profile: ${{ secrets.MANAGEMENTFUNCTIONS_PUBLISHPROFILE }}
     
