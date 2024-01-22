@@ -38,7 +38,7 @@ jobs:
         id: getDate
         uses: Kaven-Universe/github-action-current-date-time@v1
         with:
-          format: "1.YYYY.MMDD.0"
+          format: "1.YYYY.MMDD"
 
       - name: Set version in all AssemblyInfo.cs files
         id: set-assembly-version
