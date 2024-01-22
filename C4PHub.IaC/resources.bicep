@@ -12,6 +12,9 @@ var openAiServiceName = toLower('${environmentName}openai')
 var logAnalyticsWorkspaceName = toLower('${environmentName}ws')
 var applicationInsightsName = toLower('${environmentName}ai')
 var eventGridTopicName = toLower('${environmentName}topic')
+var managementFunctionName= toLower('${environmentName}management')
+var managementFunctionStorageName= toLower('${environmentName}managementstore')
+var managementFunctionPlanName= toLower('${environmentName}managementplan')
 
 //------------------------------------------------------------
 // Create data storage account and table for C4Ps
@@ -139,6 +142,57 @@ resource appSettingsRss 'Microsoft.Web/sites/config@2022-09-01' = {
     APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
     APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${applicationInsights.properties.InstrumentationKey}'
 
+  }
+}
+//------------------------------------------------------------
+
+//------------------------------------------------------------
+// Management Function App
+//------------------------------------------------------------
+resource managementFunctionStorage 'Microsoft.Storage/storageAccounts@2021-08-01' = {
+  name: managementFunctionStorageName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+}
+
+resource managementFunctionPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
+  name: managementFunctionPlanName
+  location: location
+  sku: {
+    name: 'Y1'
+    tier: 'Dynamic'
+  }
+  properties: {}
+}
+
+resource managementFunction 'Microsoft.Web/sites@2021-03-01' = {
+  name: managementFunctionName
+  location: location
+  kind: 'functionapp'
+  properties: {
+    serverFarmId: managementFunctionPlan.id
+    siteConfig: {
+      ftpsState: 'FtpsOnly'
+      minTlsVersion: '1.2'
+    }
+    httpsOnly: true
+  }
+}
+
+resource functionAppSettings 'Microsoft.Web/sites/config@2022-03-01' = {
+  name: 'appsettings'
+  parent: managementFunction
+  properties: {
+    APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
+    AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${managementFunctionStorage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${managementFunctionStorage.listKeys().keys[0].value}'
+    WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: 'DefaultEndpointsProtocol=https;AccountName=${managementFunctionStorage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${managementFunctionStorage.listKeys().keys[0].value}'
+    WEBSITE_CONTENTSHARE: toLower(managementFunction.name)
+    FUNCTIONS_EXTENSION_VERSION: '~4'
+    WEBSITE_NODE_DEFAULT_VERSION: '~10'
+    FUNCTIONS_WORKER_RUNTIME: 'dotnet-isolated'
   }
 }
 //------------------------------------------------------------
