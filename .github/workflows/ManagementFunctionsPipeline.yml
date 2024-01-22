@@ -31,19 +31,6 @@ jobs:
         with:
           dotnet-version: '8.x'
           include-prerelease: true
-
-      - name: retrieve datetime from action
-        id: getDate
-        uses: Kaven-Universe/github-action-current-date-time@v1
-        with:
-          format: "1.YYYY.MMDD.0"
-
-      - name: Set version in all AssemblyInfo.cs files
-        uses: secondbounce/assemblyinfo-update@v2
-        with:
-          version: ${{ steps.getDate.outputs.time }}
-          directory: '${{ env.AZFUNC_ROOT }}'
-          recursive: false
           
       - name: Build with dotnet
         run: dotnet build ${{ env.AZFUNC_ROOT }} --configuration Release
