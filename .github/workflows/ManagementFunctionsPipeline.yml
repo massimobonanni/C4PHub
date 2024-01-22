@@ -21,16 +21,16 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '8.x'
-          include-prerelease: true
+          include-prerelease: false
           
       - name: Build with dotnet
         run: dotnet build ${{ env.AZFUNC_ROOT }} --configuration Release
@@ -45,7 +45,7 @@ jobs:
 
       - name: Publish
         run: |
-          publishfolder="${{ github.workspace }}/managementfunctions"
+          publishfolder="${{ github.workspace }}\output"
           mkdir $publishfolder
           cd $publishfolder
           dotnet publish ${{ env.AZFUNC_ROOT }} --configuration Release --output .
