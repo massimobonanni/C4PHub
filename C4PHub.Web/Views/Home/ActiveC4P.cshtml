@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-4">
                         C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp;
-                        @if (item.DayToExpiration() == 1)
+                        @if (item.DayToExpiration() == 0)
                         {
                             <span class="badge bg-danger">Last day!</span>
                         }
@@ -40,7 +40,7 @@
                         }
                         else
                         {
-                            <span class="badge bg-light">@item.DayToExpiration() days left</span>
+                            <span class="badge bg-success">@item.DayToExpiration() days left</span>
                         }
 
                     </div>
