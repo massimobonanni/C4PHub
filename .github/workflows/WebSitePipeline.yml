@@ -47,10 +47,7 @@ jobs:
           version: ${{ steps.getDate.outputs.time }}
           directory: '${{ env.WEBAPP_ROOT }}'
           recursive: false
-      
-      - name: Display the version used
-        run: echo "{{steps.set-assembly-version.outputs.version}}"
-        
+          
       - name: Build with dotnet
         run: dotnet build ${{ env.WEBAPP_ROOT }} --configuration Release
 

@@ -29,7 +29,21 @@ jobs:
         with:
           dotnet-version: '8.x'
           include-prerelease: false
+          
+      - name: retrieve datetime from action
+        id: getDate
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: "1.YYYY.MMDD"
 
+      - name: Set version in all AssemblyInfo.cs files
+        id: set-assembly-version
+        uses: secondbounce/assemblyinfo-update@v2
+        with:
+          version: ${{ steps.getDate.outputs.time }}
+          directory: '${{ env.WEBAPP_ROOT }}'
+          recursive: false
+      
       - name: Build with dotnet
         run: dotnet build ${{ env.WEBAPP_ROOT }} --configuration Release
 
