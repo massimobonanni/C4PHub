@@ -1,5 +1,6 @@
 ﻿using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
+using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Xml;
@@ -22,11 +23,13 @@ namespace C4PHub.Core.Implementations
             c4pList = c4pList.OrderByDescending(c => c.InsertDate);
 
             var feed = new SyndicationFeed("C4PHub",
-                "The platform to share C4P with your community!", new Uri("https://c4phub.com"),
+                "The platform to share C4Ps with your community!", new Uri("https://c4phub.com"),
                 "https://rss.c4phub.com/feed", DateTime.Now);
-            feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} C4PHub");
-            feed.Language = "en-US";
 
+            var version = Assembly.GetEntryAssembly().GetName().Version;
+            feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} C4PHub - Ver.{version}");
+            feed.Language = "en-US";
+            
             var items = new List<SyndicationItem>();
             foreach (var c4pInfo in c4pList)
             {
