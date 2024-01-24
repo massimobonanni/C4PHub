@@ -62,13 +62,17 @@ namespace C4PHub.Web.Controllers
                     if (!model.OverwriteIfExists && await _persistance.ExistsC4PAsync(c4p, default))
                     {
                         ModelState.AddModelError(string.Empty, "C4P already exists");
+                        _logger.LogWarning("User {0} tries to add a C4P already exists: {1}", c4p.UserPublished,c4p.Url);
                     }
                     else
                     {
                         if (model.AddIfComplete && c4p.IsComplete())
                         {
                             if (await SaveC4P(c4p))
+                            {
+                                _logger.LogWarning("User {0} adds a C4P: {1}", c4p.UserPublished, c4p.Url);
                                 return RedirectToAction("Index", "Home");
+                            }
                         }
                         else
                         {
@@ -107,7 +111,10 @@ namespace C4PHub.Web.Controllers
                 if (c4p.IsComplete())
                 {
                     if (await SaveC4P(c4p))
+                    {
+                        _logger.LogWarning("User {0} adds a C4P: {1}", c4p.UserPublished, c4p.Url);
                         return RedirectToAction("Index", "Home");
+                    }     
                 }
             }
             return View(model);
@@ -123,6 +130,7 @@ namespace C4PHub.Web.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, "Error saving C4P");
+                _logger.LogError("Error savng a C4P {1} by the user {0}", c4p.UserPublished, c4p.Url);
             }
 
             return false;
