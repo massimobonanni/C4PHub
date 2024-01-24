@@ -59,7 +59,7 @@ namespace C4PHub.Web.Controllers
                 {
                     var c4p = response.Value;
                     c4p.UserPublished = !User.Identity.IsAuthenticated ? model.UserPublished : User.Identity.Name;
-                    if (await _persistance.ExistsC4PAsync(c4p, default))
+                    if (!model.OverwriteIfExists && await _persistance.ExistsC4PAsync(c4p, default))
                     {
                         ModelState.AddModelError(string.Empty, "C4P already exists");
                     }
@@ -81,7 +81,7 @@ namespace C4PHub.Web.Controllers
                             completeModel.Url = model.Url;
                             completeModel.EventName = c4p.EventName;
                             completeModel.EventLocation = c4p.EventLocation;
-                            completeModel.EventDate = c4p.EventDate!=default ? c4p.EventDate : DateTime.Now;
+                            completeModel.EventDate = c4p.EventDate != default ? c4p.EventDate : DateTime.Now;
                             completeModel.ExpiredDate = c4p.ExpiredDate != default ? c4p.ExpiredDate : DateTime.Now;
                             return View("Complete", completeModel);
                         }
@@ -115,22 +115,16 @@ namespace C4PHub.Web.Controllers
 
         private async Task<bool> SaveC4P(C4PInfo c4p)
         {
-            if (!await _persistance.ExistsC4PAsync(c4p, default))
+            if (await _persistance.SaveC4PAsync(c4p, default))
             {
-                if (await _persistance.SaveC4PAsync(c4p, default))
-                {
-                    await _notificationService.SendNotificationAsync(c4p, default);
-                    return true;
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Error saving C4P");
-                }
+                await _notificationService.SendNotificationAsync(c4p, default);
+                return true;
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "C4P already exists");
+                ModelState.AddModelError(string.Empty, "Error saving C4P");
             }
+
             return false;
         }
     }

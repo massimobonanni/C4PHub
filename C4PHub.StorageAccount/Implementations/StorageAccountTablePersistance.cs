@@ -111,7 +111,7 @@ namespace C4PHub.StorageAccount.Implementations
                 TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
                 var c4pEntity = new C4PEntity(c4p);
-                var response = await tableClient.AddEntityAsync(c4pEntity, cancellationToken: token);
+                var response = await tableClient.UpsertEntityAsync(c4pEntity,TableUpdateMode.Replace, cancellationToken: token);
                 this._logger.LogInformation("C4P {0} saved: {1}", c4p, !response.IsError);
                 return !response.IsError;
             }

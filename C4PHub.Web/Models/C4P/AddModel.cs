@@ -19,5 +19,9 @@ namespace C4PHub.Web.Models.C4P
         [DefaultValue(true)]
         [Display(Name = "Add automatically if complete")]
         public bool AddIfComplete { get; set; }
+
+        [DefaultValue(false)]
+        [Display(Name = "Overwrite the Call for Paper if exists")]
+        public bool OverwriteIfExists { get; set; }
     }
 }

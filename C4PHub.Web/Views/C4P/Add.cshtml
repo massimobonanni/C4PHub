@@ -10,6 +10,7 @@
     <ul>
         <li>If the <i>'Add automatically if complete'</i> option is active and I have all the Call for Paper information, I will insert it automatically.</li>
         <li>If you want to edit the Call for Paper information before inserting it, disable the <i>'Add automatically if complete'</i> option before click on Add.</li>
+        <li>If you want to overwrite an existing Call for Paper (e.g. because it changes its expiration date), enable the <i>'Overwrite the Call for Paper if exists'</i> option before click on Add.</li>
     </ul>
 </div>
 <form asp-action="Add">
@@ -43,6 +44,12 @@
     <div class="row">
         <div class="col-md-8">
             <input asp-for="AddIfComplete" />@Html.DisplayNameFor(model=>model.AddIfComplete)
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-8">
+            <input asp-for="OverwriteIfExists" />@Html.DisplayNameFor(model => model.OverwriteIfExists)
         </div>
     </div>
     <br />
