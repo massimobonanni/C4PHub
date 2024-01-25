@@ -49,5 +49,14 @@ namespace C4PHub.Core.Interfaces
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task representing the asynchronous operation. The task result contains a boolean value indicating if the C4PInfo object was deleted successfully.</returns>
         Task<bool> DeleteC4PAsync(C4PInfo c4p, CancellationToken token = default);
+
+        /// <summary>
+        /// Gets a C4PInfo object asynchronously based on the C4P ID and year.
+        /// </summary>
+        /// <param name="c4pId">The C4P ID.</param>
+        /// <param name="c4pYear">The C4P year.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains the C4PInfo object.</returns>
+        Task<C4PInfo> GetC4PAsync(string c4pId, string c4pYear, CancellationToken token = default);
     }
 }

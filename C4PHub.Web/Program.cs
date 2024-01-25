@@ -33,6 +33,7 @@ builder.Services.AddRateLimiter(_ => _
 // Add services to the container.
 builder.Services.AddC4PManager();
 builder.Services.AddScoped<IC4PPersistance, StorageAccountTablePersistance>();
+builder.Services.AddScoped<IC4PCalendarGenerator, CoreC4PCalendarGenerator>();
 
 builder.Services.AddControllersWithViews();
 

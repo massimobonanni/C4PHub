@@ -65,6 +65,30 @@ namespace C4PHub.StorageAccount.Implementations
             }
         }
 
+        public async Task<C4PInfo> GetC4PAsync(string c4pId, string c4pYear, CancellationToken token = default)
+        {
+            this._logger.LogInformation("Get C4P {0} {1}", c4pId, c4pYear);
+            try
+            {
+                TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
+                TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
+
+                var c4pEntity = await tableClient.GetEntityIfExistsAsync<C4PEntity>(
+                    rowKey: c4pId, partitionKey: c4pYear, cancellationToken: token);
+
+                C4PInfo c4pInfo = null;
+                if (c4pEntity.HasValue)
+                    c4pInfo= c4pEntity.Value.ToC4PInfo();
+
+                return c4pInfo;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, "Error during retrieving C4P {0} {1}", c4pId,c4pYear);
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<C4PInfo>> GetClosedC4PsAsync(CancellationToken token = default)
         {
             var resultList = new List<C4PInfo>();
@@ -111,7 +135,7 @@ namespace C4PHub.StorageAccount.Implementations
                 TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
                 var c4pEntity = new C4PEntity(c4p);
-                var response = await tableClient.UpsertEntityAsync(c4pEntity,TableUpdateMode.Replace, cancellationToken: token);
+                var response = await tableClient.UpsertEntityAsync(c4pEntity, TableUpdateMode.Replace, cancellationToken: token);
                 this._logger.LogInformation("C4P {0} saved: {1}", c4p, !response.IsError);
                 return !response.IsError;
             }
