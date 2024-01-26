@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-4">
                         Event date @item.EventDate.ToString("dd/MM/yyyy") &nbsp;
-                        <a href=@Url.Action("Index","Calendar", new { c4pId=item.Id, year= item.EventDate.ToString("yyyy"), type= "EventDate",format="Ics"})><img src="~/img/calendar.png" height="16" alt="Download ICS for the event" /></a>
+                        @* <a href=@Url.Action("Index","Calendar", new { c4pId=item.Id, year= item.EventDate.ToString("yyyy"), type= "EventDate",format="Ics"})><img src="~/img/calendar.png" height="16" alt="Download ICS for the event" /></a> *@
                     </div>
                     <div class="col-8 text-wrap">
                         @item.EventLocation
@@ -31,8 +31,8 @@
                 <div class="row">
                     <div class="col-4">
                         C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp;
-                        <a href=@Url.Action("Index","Calendar", new { c4pId=item.Id, year= item.EventDate.ToString("yyyy"), type= "C4PExpirationDate",format="Ics"})><img src="~/img/calendar.png" height="16" alt="Download ICS for the c4p expiration" /></a>
-                        &nbsp;
+                        @* <a href=@Url.Action("Index","Calendar", new { c4pId=item.Id, year= item.EventDate.ToString("yyyy"), type= "C4PExpirationDate",format="Ics"})><img src="~/img/calendar.png" height="16" alt="Download ICS for the c4p expiration" /></a>
+                        &nbsp; *@
                         @if (item.DayToExpiration() == 0)
                         {
                             <span class="badge bg-danger">Last day!</span>
