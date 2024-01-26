@@ -23,9 +23,9 @@
                 <div class="row">
                     <div class="col-4">
                         Event date @item.EventDate.ToString("dd/MM/yyyy") &nbsp;
-                        <generateCalendar c4pId=@item.Id year=@item.EventDate.ToString("yyyy") type="EventDate" format="Ics">
+                        @* <generateCalendar c4pId=@item.Id year=@item.EventDate.ToString("yyyy") type="EventDate" format="Ics">
                             <img src="~/img/calendar.png" height="16" alt="Download ICS for the c4p expiration" />
-                        </generateCalendar>
+                        </generateCalendar> *@
                     </div>
                     <div class="col-8 text-wrap">
                         @item.EventLocation
@@ -47,9 +47,9 @@
                             <span class="badge bg-success">@item.DayToExpiration() days left</span>
                         }
                         &nbsp;
-                        <generateCalendar c4pId=@item.Id year=@item.EventDate.ToString("yyyy") type="C4PExpirationDate" format="Ics">
+                        @* <generateCalendar c4pId=@item.Id year=@item.EventDate.ToString("yyyy") type="C4PExpirationDate" format="Ics">
                             <img src="~/img/calendar.png" height="16" alt="Download ICS for the c4p expiration" />
-                        </generateCalendar>
+                        </generateCalendar> *@
                     </div>
                 </div>
             </div>
