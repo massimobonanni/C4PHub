@@ -1,5 +1,6 @@
 ﻿using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
+using C4PHub.Core.Utilities;
 using C4PHub.Sessionize.Utilities;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
@@ -30,7 +31,7 @@ namespace C4PHub.Sessionize.Implementations
         {
             this._logger.LogInformation("Checking if Sessionize page {0} can be managed.", c4p.Url);
             string url = c4p.Url;
-            bool startsWithValidPrefix = _validUrlPrefixes.Any(prefix => url.StartsWith(prefix,StringComparison.InvariantCultureIgnoreCase));
+            bool startsWithValidPrefix = _validUrlPrefixes.Any(prefix => url.StartsWith(prefix, StringComparison.InvariantCultureIgnoreCase));
             this._logger.LogInformation("Sessionize page {0} can be managed: {1}.", c4p.Url, startsWithValidPrefix);
             return Task.FromResult(startsWithValidPrefix);
         }
@@ -51,15 +52,23 @@ namespace C4PHub.Sessionize.Implementations
                 // Extract Event Title
                 var titleNode = leftColumn.SelectSingleNode(".//div[@class='ibox-title']/h4");
                 c4p.EventName = System.Net.WebUtility.HtmlDecode(titleNode.InnerText);
-                
+
                 var contentNode = leftColumn.SelectSingleNode(".//div[@class='ibox-content']");
 
                 var contentRows = contentNode.SelectNodes(".//div[@class='row']");
 
-                // Extract Event Date
-                var eventDateRow = contentRows[0];
-                var eventDateNode = eventDateRow.SelectSingleNode(".//h2");
-                c4p.EventDate = DateTime.Parse(eventDateNode.InnerText);
+                // Extract Event Start Date
+                var eventDatesRow = contentRows[0];
+                var eventStartDateNode = eventDatesRow.SelectSingleNode(".//h2");
+                var eventStartDateStr = eventStartDateNode.InnerText;
+                var eventEndDateStr = eventStartDateStr;
+
+                // Extract Event End Date
+                var eventEndDateNode = eventDatesRow.SelectSingleNode(".//div[2]/h2");
+                if (eventEndDateNode != null)
+                {
+                    eventEndDateStr = eventEndDateNode.InnerText;
+                }
 
                 // Extract location
                 var locationDateRow = contentRows[1];
@@ -71,15 +80,34 @@ namespace C4PHub.Sessionize.Implementations
                 contentRows = contentNode.SelectNodes(".//div[@class='row']");
                 // Extract C4P closing date
                 var c4pClosingDateRow = contentRows[0];
+
+                var c4pclosingTimeNode = c4pClosingDateRow.SelectSingleNode(".//div[2]/div[1]");
+                var c4pClosingTime = StringUtility.ExtractAMPMPart(c4pclosingTimeNode.InnerText);
                 var c4pClosingDateNode = c4pClosingDateRow.SelectSingleNode(".//div[2]/h2");
-                c4p.ExpiredDate = DateTime.Parse(c4pClosingDateNode.InnerText);
+                var c4pClosingDate = c4pClosingDateNode.InnerText;
+
+                var c4pClosingDateTimezoneRow = contentRows[1];
+                var c4pClosingDateTimezoneNode = c4pClosingDateTimezoneRow.SelectSingleNode(".//div[1]/small/strong"); // UTC +01:00
+                var c4pClosingDateTimezone = StringUtility.ExtractUTCPart(c4pClosingDateTimezoneNode.InnerText);
+
+                var c4pClosingDateTimeOffset = DateTimeUtility.ParseStringToDateTimeOffset($"{c4pClosingDate} {c4pClosingTime} {c4pClosingDateTimezone}");
+                if (c4pClosingDateTimeOffset.HasValue)
+                    c4p.ExpiredDate = c4pClosingDateTimeOffset.Value;
+
+                var eventStartDate= DateTimeUtility.ParseStringToDateTimeOffset($"{eventStartDateStr} 00:00 AM UTC+00:00"); 
+                if (eventStartDate.HasValue)
+                    c4p.EventDate = eventStartDate.Value;
+
+                var eventEndDate = DateTimeUtility.ParseStringToDateTimeOffset($"{eventEndDateStr} 11:59 PM UTC+00:00");
+                if (eventEndDate.HasValue)
+                    c4p.EventEndDate = eventEndDate.Value;
 
                 this._logger.LogInformation("C4P information extracted from Sessionize page {0}.", c4p.Url);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while extracting C4P information from Sessionize page {0}.",c4p.Url);
+                _logger.LogError(ex, "Error while extracting C4P information from Sessionize page {0}.", c4p.Url);
                 return false;
             }
         }

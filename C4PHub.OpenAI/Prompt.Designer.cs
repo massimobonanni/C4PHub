@@ -68,16 +68,14 @@ namespace C4PHub.OpenAI {
         ///{ 
         ///   &quot;c4pUrl&quot;:&quot;&quot;, 
         ///   &quot;eventName&quot;:&quot;&quot;,  
-        ///   &quot;eventDate&quot;:&quot;dd/MM/YYYY&quot;,  
-        ///   &quot;c4pExpirationDate&quot;:&quot;dd/MM/YYYY&quot;,  
+        ///   &quot;eventStartDate&quot;:&quot;dd/MM/yyyy&quot;,
+        ///   &quot;eventEndDate&quot;:&quot;dd/MM/yyyy&quot;  
+        ///   &quot;c4pExpirationDate&quot;:&quot;dd/MM/yyyy HH:mm UTCzzz&quot;,  
         ///   &quot;eventLocation&quot;:&quot;&quot;  
         ///}  
         ///
         ///Return only the JSON.
-        ///If a field is not present in the HTML, it must not be present in the JSON.
-        ///If you cannot extract data, return an empty string.
-        ///
-        ///{.
+        ///The start and end date for the event must be in the format &quot;dd/MM/yyyy&quot; while the expiration date for the call [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PromptMessage {
             get {

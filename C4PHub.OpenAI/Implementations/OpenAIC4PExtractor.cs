@@ -18,6 +18,7 @@ using HtmlAgilityPack;
 using Microsoft.SemanticKernel;
 using System.Net;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using C4PHub.Core.Utilities;
 
 namespace C4PHub.OpenAI.Implementations
 {
@@ -85,16 +86,30 @@ namespace C4PHub.OpenAI.Implementations
             if (entity != null)
             {
                 c4p.EventName = entity.eventName;
-                if (!string.IsNullOrWhiteSpace(entity.eventDate))
+                if (!string.IsNullOrWhiteSpace(entity.eventStartDate))
                 {
-                    if (DateTime.TryParse(entity.eventDate, out var eventDate))
-                        c4p.EventDate = eventDate;
+                    var startDate = DateTimeUtility.ParseStringToDateTimeOffset(entity.eventStartDate);
+                    if (startDate.HasValue)
+                        c4p.EventDate = startDate.Value;
                 }
+                if (!string.IsNullOrWhiteSpace(entity.eventEndDate))
+                {
+                    var endDate = DateTimeUtility.ParseStringToDateTimeOffset(entity.eventEndDate);
+                    if (endDate.HasValue)
+                        c4p.EventEndDate = endDate.Value;
+                }
+                else
+                {
+                    c4p.EventEndDate = c4p.EventDate;
+                }
+
                 c4p.EventLocation = entity.eventLocation;
+                
                 if (!string.IsNullOrWhiteSpace(entity.c4pExpirationDate))
                 {
-                    if (DateTime.TryParse(entity.c4pExpirationDate, out var expiredDate))
-                        c4p.ExpiredDate = expiredDate;
+                    var expirationdate= DateTimeUtility.ParseStringToDateTimeOffset(entity.c4pExpirationDate);
+                    if (expirationdate.HasValue)
+                        c4p.ExpiredDate = expirationdate.Value;
                 }
             }
         }

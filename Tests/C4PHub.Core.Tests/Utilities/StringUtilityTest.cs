@@ -75,7 +75,7 @@ namespace C4PHub.Core.Tests.Utilities
         [Theory]
         [MemberData(nameof(DataGenerator.GetWebUrlToConsiderTheSame), MemberType = typeof(DataGenerator))]
         public void GenerateIdFromString_ShouldGenerateSameId_WhenUrlsAreTheSame(string url1, string url2)
-        { 
+        {
             var result1 = StringUtility.GenerateIdFromString(url1);
             var result2 = StringUtility.GenerateIdFromString(url2);
 
@@ -83,7 +83,48 @@ namespace C4PHub.Core.Tests.Utilities
         }
         #endregion GenerateIdFromString
 
+        #region ExtractAMPMPart
+        [Fact]
+        public void ExtractAMPMPart_ReturnsNull_WhenInputIsNull()
+        {
+            string input = null;
 
+            var result = StringUtility.ExtractAMPMPart(input);
+
+            Assert.Null(result);
+        }
+
+        [Theory]
+        [MemberData(nameof(DataGenerator.GetStringsWithAMPM), MemberType = typeof(DataGenerator))]
+        public void ExtractAMPMPart_ShouldExtractTheRightTime_WhenTheStringIsWellFormed(string fullString, string timeString)
+        {
+            var result = StringUtility.ExtractAMPMPart(fullString);
+
+            Assert.Equal(result, timeString);
+        }
+
+        #endregion
+
+        #region ExtractUTCPart
+        [Fact]
+        public void ExtractUTCPart_ReturnsNull_WhenInputIsNull()
+        {
+            string input = null;
+
+            var result = StringUtility.ExtractUTCPart(input);
+
+            Assert.Null(result);
+        }
+
+        [Theory]
+        [MemberData(nameof(DataGenerator.GetStringsWithUTC), MemberType = typeof(DataGenerator))]
+        public void ExtractUTCPart_ShouldExtractTheRightTime_WhenTheStringIsWellFormed(string fullString, string timeString)
+        {
+            var result = StringUtility.ExtractUTCPart(fullString);
+
+            Assert.Equal(result, timeString);
+        }
+        #endregion ExtractUTCPart
 
         #region Private classes
         private class DataGenerator
@@ -110,6 +151,39 @@ namespace C4PHub.Core.Tests.Utilities
                     "https://www.website.com/evento1",
                     "https://www.website.com/evento1",
                 };
+            }
+
+            public static IEnumerable<object[]> GetStringsWithAMPM()
+            {
+                yield return new object[] { "pippo", null };
+                yield return new object[] { "12:00 PM", "12:00 PM" };
+                yield return new object[] { "Call closes at 12:00 PM", "12:00 PM" };
+                yield return new object[] { "The meeting is at 02:15 PM", "02:15 PM" };
+                yield return new object[] { "Hello 05:30 AM", "05:30 AM" };
+                yield return new object[] { "09:45 PM Good night", "09:45 PM" };
+                yield return new object[] { "Lunch time 12:30 PM", "12:30 PM" };
+                yield return new object[] { "07:10 AM Wake up", "07:10 AM" };
+                yield return new object[] { "06:00 PM Dinner", "06:00 PM" };
+                yield return new object[] { "Happy birthday 10:00 AM", "10:00 AM" };
+                yield return new object[] { "04:20 PM Blaze it", "04:20 PM" };
+                yield return new object[] { "08:05 AM Have a nice day", "08:05 AM" };
+                yield return new object[] { "03:50 PM Coffee break", "03:50 PM" };
+            }
+
+            public static IEnumerable<object[]> GetStringsWithUTC()
+            {
+                yield return new object[] { "pippo", null };
+                yield return new object[] { "UTC-01:00", "UTC-01:00" };
+                yield return new object[] { "UTC+01:00 is the current timezone in Italy", "UTC+01:00" };
+                yield return new object[] { "The server is located in UTC-05:00", "UTC-05:00" };
+                yield return new object[] { "Nairobi UTC+03:00 ", "UTC+03:00" };
+                yield return new object[] { "UTC+08:00 Beijing", "UTC+08:00" };
+                yield return new object[] { "UTC-03:00 Buenos Aires", "UTC-03:00" };
+                yield return new object[] { "UTC+10:00 Sydney", "UTC+10:00" };
+                yield return new object[] { "UTC-08:00 Los Angeles", "UTC-08:00" };
+                yield return new object[] { "UTC+05:30 New Delhi", "UTC+05:30" };
+                yield return new object[] { "Mexico City (UTC-06:00) ", "UTC-06:00" };
+                yield return new object[] { "  UTC+02:00 Cairo  ", "UTC+02:00" };
             }
         }
         #endregion Private classes

@@ -16,12 +16,14 @@ namespace C4PHub.EventGrid.Entities
             EventLocation = c4pInfo.EventLocation;
             EventDate = c4pInfo.EventDate;
             ExpiredDate = c4pInfo.ExpiredDate;
+            EventEndDate = c4pInfo.EventEndDate;
         }
 
         public string Url { get; set; }
         public string EventName { get; set; }
         public string EventLocation { get; set; }
-        public DateTime EventDate { get; set; }
-        public DateTime ExpiredDate { get; set; }
+        public DateTimeOffset EventDate { get; set; }
+        public DateTimeOffset EventEndDate { get; set; }
+        public DateTimeOffset ExpiredDate { get; set; }
     }
 }

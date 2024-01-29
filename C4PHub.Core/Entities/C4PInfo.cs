@@ -36,14 +36,19 @@ namespace C4PHub.Core.Entities
         public string EventLocation { get; set; }
 
         /// <summary>
-        /// Gets or sets the date of the event.
+        /// Gets or sets the start date of the event.
         /// </summary>
-        public DateTime EventDate { get; set; } 
+        public DateTimeOffset EventDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end date of the the event.
+        /// </summary>
+        public DateTimeOffset EventEndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the expired date of the event.
         /// </summary>
-        public DateTime ExpiredDate { get; set; } 
+        public DateTimeOffset ExpiredDate { get; set; } 
 
         /// <summary>
         /// Gets or sets the user who published the event.

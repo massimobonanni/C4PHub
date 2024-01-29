@@ -14,11 +14,11 @@ namespace C4PHub.Core.Implementations
     {
         private class iCalendar
         {
-            public DateTime EventStartDateTime { get; set; }
-            public DateTime EventEndDateTime { get; set; }
-            public DateTime EventTimeStamp { get; set; }
-            public DateTime EventCreatedDateTime { get; set; }
-            public DateTime EventLastModifiedTimeStamp { get; set; }
+            public DateTimeOffset EventStartDateTime { get; set; }
+            public DateTimeOffset EventEndDateTime { get; set; }
+            public DateTimeOffset EventTimeStamp { get; set; }
+            public DateTimeOffset EventCreatedDateTime { get; set; }
+            public DateTimeOffset EventLastModifiedTimeStamp { get; set; }
             public string UID { get; set; }
             public string EventDescription { get; set; }
             public string EventLocation { get; set; }
@@ -78,23 +78,34 @@ namespace C4PHub.Core.Implementations
             sb.AppendLine("PRODID:-//C4PHub.com//C4PHub MIMEDIR//EN");
             sb.AppendLine("VERSION:2.0");
             sb.AppendLine("METHOD:PUBLISH");
-            sb.AppendLine("BEGIN: VTIMEZONE");
-            sb.AppendLine("TZID:UTC");
-            sb.AppendLine("END:VTIMEZONE");
+            //sb.AppendLine("BEGIN: VTIMEZONE");
+            //sb.AppendLine("TZID:UTC");
+            //sb.AppendLine("END:VTIMEZONE");
             //Event
             sb.AppendLine("BEGIN:VEVENT");
             sb.AppendLine("CLASS:PUBLIC");
-            sb.AppendLine("DTSTART:" + iCal.EventStartDateTime.ToString("yyyyMMdd")+ "T000000Z");
-            sb.AppendLine("DTEND:" + iCal.EventStartDateTime.ToString("yyyyMMdd")+ "T235959Z");
-            sb.AppendLine("DTSTAMP:" + iCal.EventTimeStamp.ToString("yyyyMMddHHmmssZ"));
+            sb.AppendLine("DTSTART:" + iCal.EventStartDateTime.ToUniversalTime().ToString("yyyyMMdd")+ "T000000Z");
+            sb.AppendLine("DTEND:" + iCal.EventStartDateTime.ToUniversalTime().ToString("yyyyMMdd")+ "T235959Z");
+            sb.AppendLine("DTSTAMP:" + iCal.EventTimeStamp.ToUniversalTime().ToString("yyyyMMddHHmmssZ"));
             sb.AppendLine("ORGANIZER;CN=C4PHub.com");
             sb.AppendLine("UID:" + iCal.UID);
             sb.AppendLine("CREATED:" + iCal.EventCreatedDateTime.ToString("yyyyMMddHHmmssZ"));
-            sb.AppendLine("LAST-MODIFIED:" + iCal.EventLastModifiedTimeStamp.ToString("yyyyMMddHHmmssZ"));
+            sb.AppendLine("LAST-MODIFIED:" + iCal.EventLastModifiedTimeStamp.ToUniversalTime().ToString("yyyyMMddHHmmssZ"));
             sb.AppendLine("LOCATION:" + iCal.EventLocation.Substring(0,Math.Min(iCal.EventLocation.Length, 75)));
             sb.AppendLine("SEQUENCE:0");
-            sb.AppendLine("DESCRIPTION:"+ iCal.EventSummary);
-            sb.AppendLine("SUMMARY;LANGUAGE=en:" + iCal.EventSummary);
+            switch (type)
+            {
+                case CalendarType.EventDate:
+                    sb.AppendLine("DESCRIPTION:" + iCal.EventSummary);
+                    sb.AppendLine("SUMMARY;LANGUAGE=en:" + iCal.EventSummary);
+                    break;
+                case CalendarType.C4PExpirationDate:
+                    sb.AppendLine("DESCRIPTION:C4P Expiration for " + iCal.EventSummary);
+                    sb.AppendLine("SUMMARY;LANGUAGE=en:C4P Expiration for " + iCal.EventSummary);
+                    break;
+                default:
+                    break;
+            }
             sb.AppendLine("TRANSP:TRANSPARENT");
             sb.AppendLine("X-MICROSOFT-CDO-BUSYSTATUS:FREE");
             sb.AppendLine("END:VEVENT");

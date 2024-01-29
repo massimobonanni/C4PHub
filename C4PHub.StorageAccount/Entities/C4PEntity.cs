@@ -19,9 +19,10 @@ namespace C4PHub.StorageAccount.Entities
             Url = c4p.Url;
             EventName = c4p.EventName;
             EventLocation = c4p.EventLocation;
-            EventDate = c4p.EventDate.ToUniversalTime();
-            ExpiredDate = c4p.ExpiredDate.ToUniversalTime();
+            EventDate = c4p.EventDate;
+            ExpiredDate = c4p.ExpiredDate;
             UserPublished = c4p.UserPublished;
+            EventEndDate = c4p.EventEndDate;
         }
 
         public C4PEntity()
@@ -50,14 +51,19 @@ namespace C4PHub.StorageAccount.Entities
         public string? EventLocation { get; set; }
 
         /// <summary>
-        /// Gets or sets the date of the event.
+        /// Gets or sets the start date of the event.
         /// </summary>
-        public DateTime EventDate { get; set; }
+        public DateTimeOffset EventDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end date of the event.
+        /// </summary>
+        public DateTimeOffset EventEndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the expired date of the event.
         /// </summary>
-        public DateTime ExpiredDate { get; set; }
+        public DateTimeOffset ExpiredDate { get; set; }
 
         /// <summary>
         /// Gets or sets the user who published the event.
