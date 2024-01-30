@@ -15,6 +15,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\C4PHub.Auth\C4PHub.Auth.csproj" />
+		<ProjectReference Include="..\C4PHub.Calendar.ICalNet\C4PHub.Calendar.ICalNet.csproj" />
 		<ProjectReference Include="..\C4PHub.Core\C4PHub.Core.csproj" />
 		<ProjectReference Include="..\C4PHub.EventGrid\C4PHub.EventGrid.csproj" />
 		<ProjectReference Include="..\C4PHub.OpenAI\C4PHub.OpenAI.csproj" />

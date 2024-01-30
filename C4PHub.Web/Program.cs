@@ -1,4 +1,4 @@
-using C4PHub.Core.Implementations;
+using C4PHub.Calendar.ICalNet.Implementations;
 using C4PHub.Core.Interfaces;
 using C4PHub.OpenAI.Implementations;
 using C4PHub.Sessionize.Implementations;
@@ -33,7 +33,8 @@ builder.Services.AddRateLimiter(_ => _
 // Add services to the container.
 builder.Services.AddC4PManager();
 builder.Services.AddScoped<IC4PPersistance, StorageAccountTablePersistance>();
-builder.Services.AddScoped<IC4PCalendarGenerator, CoreC4PCalendarGenerator>();
+//builder.Services.AddScoped<IC4PCalendarGenerator, CoreC4PCalendarGenerator>();
+builder.Services.AddScoped<IC4PCalendarGenerator, CalNetCalendarGenerator>();
 
 builder.Services.AddControllersWithViews();
 

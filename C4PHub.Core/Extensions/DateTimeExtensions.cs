@@ -6,12 +6,24 @@ using System.Threading.Tasks;
 
 namespace System
 {
-    internal static class DateTimeExtensions
+    public static class DateTimeExtensions
     {
-        public static string ToUniversalTimeString(this DateTime dateTime)
+        public static string ToTimeFormatString(this DateTime dateTime)
         {
             string dateFormat = "yyyyMMddTHHmmssZ";
             return dateTime.ToUniversalTime().ToString(dateFormat);
+        }
+
+        public static string ToStandardFormatString(this DateTimeOffset dateTime)
+        {
+            if (dateTime.Offset == TimeSpan.Zero)
+            {
+                return dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            }
+            else
+            {
+                return dateTime.ToString("yyyy-MM-ddTHH:mm:sszzz");
+            }
         }
 
     }
