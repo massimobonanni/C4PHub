@@ -106,6 +106,16 @@ namespace C4PHub.Core.Tests.Utilities
                 yield return new object[] { "09/09/2024", new DateTimeOffset(new DateTime(2024, 9, 9, 0, 0, 0)) };
                 yield return new object[] { "24/10/2024", new DateTimeOffset(new DateTime(2024, 10, 24, 0, 0, 0)) };
                 yield return new object[] { "07/11/2024", new DateTimeOffset(new DateTime(2024, 11, 7, 0, 0, 0)) };
+                yield return new object[] { "01/02/2024 12:34 UTC+01:00", new DateTimeOffset(new DateTime(2024, 2, 1, 12, 34, 0), TimeSpan.FromHours(1)) };
+                yield return new object[] { "15/03/2024 23:45 UTC-05:00", new DateTimeOffset(new DateTime(2024, 3, 15, 23, 45, 0), TimeSpan.FromHours(-5)) };
+                yield return new object[] { "30/04/2024 08:09 UTC+10:00", new DateTimeOffset(new DateTime(2024, 4, 30, 8, 9, 0), TimeSpan.FromHours(10)) };
+                yield return new object[] { "14/05/2024 16:17 UTC-08:00", new DateTimeOffset(new DateTime(2024, 5, 14, 16, 17, 0), TimeSpan.FromHours(-8)) };
+                yield return new object[] { "29/06/2024 19:28 UTC+02:00", new DateTimeOffset(new DateTime(2024, 6, 29, 19, 28, 0), TimeSpan.FromHours(2)) };
+                yield return new object[] { "13/07/2024 04:36 UTC+05:30", new DateTimeOffset(new DateTime(2024, 7, 13, 4, 36, 0), TimeSpan.FromHours(5.5)) };
+                yield return new object[] { "27/08/2024 10:44 UTC-03:00", new DateTimeOffset(new DateTime(2024, 8, 27, 10, 44, 0), TimeSpan.FromHours(-3)) };
+                yield return new object[] { "11/09/2024 13:55 UTC+00:00", new DateTimeOffset(new DateTime(2024, 9, 11, 13, 55, 0), TimeSpan.FromHours(0)) };
+                yield return new object[] { "26/10/2024 18:03 UTC+08:00", new DateTimeOffset(new DateTime(2024, 10, 26, 18, 3, 0), TimeSpan.FromHours(8)) };
+                yield return new object[] { "10/11/2024 21:12 UTC-06:00", new DateTimeOffset(new DateTime(2024, 11, 10, 21, 12, 0), TimeSpan.FromHours(-6)) };
 
 
             }

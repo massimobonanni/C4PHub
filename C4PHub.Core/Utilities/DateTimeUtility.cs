@@ -17,7 +17,8 @@ namespace C4PHub.Core.Utilities
                     "d MMM yyyy h:mm tt 'UTC'zzz",
                     "ddd, dd MMM yyyy HH:mm UTCzzz",
                     "ddd, dd MMM yyyy HH:mm UTC|zzz",
-                    "dd/MM/yyyy"
+                    "dd/MM/yyyy",
+                    "dd/MM/yyyy HH:mm 'UTC'zzz",
             };
 
         public static DateTimeOffset? ParseStringToDateTimeOffset(string input)

@@ -1,8 +1,10 @@
 ﻿using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
+using C4PHub.Core.Utilities;
 using C4PHub.Web.Models.C4P;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using System.Globalization;
 using System.Xml;
 
 namespace C4PHub.Web.Controllers
@@ -62,7 +64,7 @@ namespace C4PHub.Web.Controllers
                     if (!model.OverwriteIfExists && await _persistance.ExistsC4PAsync(c4p, default))
                     {
                         ModelState.AddModelError(string.Empty, "C4P already exists");
-                        _logger.LogWarning("User {0} tries to add a C4P already exists: {1}", c4p.UserPublished,c4p.Url);
+                        _logger.LogWarning("User {0} tries to add a C4P already exists: {1}", c4p.UserPublished, c4p.Url);
                     }
                     else
                     {
@@ -83,10 +85,7 @@ namespace C4PHub.Web.Controllers
                             else
                                 completeModel.UserPublished = model.UserPublished;
                             completeModel.Url = model.Url;
-                            completeModel.EventName = c4p.EventName;
-                            completeModel.EventLocation = c4p.EventLocation;
-                            completeModel.EventDate = c4p.EventDate != default ? c4p.EventDate.Date : DateTime.Now;
-                            completeModel.ExpiredDate = c4p.ExpiredDate != default ? c4p.ExpiredDate.Date : DateTime.Now;
+                            completeModel.Fill(c4p);
                             return View("Complete", completeModel);
                         }
                     }
@@ -105,16 +104,24 @@ namespace C4PHub.Web.Controllers
                 c4p.Url = model.Url;
                 c4p.EventName = model.EventName;
                 c4p.EventLocation = model.EventLocation;
-                c4p.EventDate = model.EventDate.Value;
-                c4p.ExpiredDate = model.ExpiredDate.Value;
+                var startDateTimeOffset= DateTimeUtility.ParseStringToDateTimeOffset($"{model.EventDate.Value:dd/MM/yyyy} 00:00 {model.SelectedTimeZone}");
+                if (startDateTimeOffset.HasValue)
+                    c4p.EventDate = startDateTimeOffset.Value;
+                var endDateTimeOffset = DateTimeUtility.ParseStringToDateTimeOffset($"{model.EventEndDate.Value:dd/MM/yyyy} 23:59 {model.SelectedTimeZone}");
+                if (endDateTimeOffset.HasValue)
+                    c4p.EventEndDate = endDateTimeOffset.Value;
 
+                var expiredDateTimeOffset = DateTimeUtility.ParseStringToDateTimeOffset($"{model.ExpiredDate.Value:dd/MM/yyyy} 00:00 {model.SelectedTimeZone}");
+                if (expiredDateTimeOffset.HasValue)
+                    c4p.ExpiredDate = expiredDateTimeOffset.Value;
+     
                 if (c4p.IsComplete())
                 {
                     if (await SaveC4P(c4p))
                     {
                         _logger.LogWarning("User {0} adds a C4P: {1}", c4p.UserPublished, c4p.Url);
                         return RedirectToAction("Index", "Home");
-                    }     
+                    }
                 }
             }
             return View(model);
