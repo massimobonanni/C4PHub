@@ -87,6 +87,7 @@ namespace C4PHub.StorageAccount.Entities
                 EventName = this.EventName,
                 EventLocation = this.EventLocation,
                 EventDate = this.EventDate,
+                EventEndDate = this.EventEndDate,
                 ExpiredDate = this.ExpiredDate,
                 UserPublished = this.UserPublished,
                 InsertDate= this.InsertDate

@@ -26,5 +26,10 @@ namespace System
             }
         }
 
+        public static string ToUniversalFormatString(this DateTimeOffset dateTime)
+        {
+            return dateTime.ToUniversalTime().ToString("yyyyMMddTHHmmssZ");
+        }
+
     }
 }

@@ -20,6 +20,17 @@ namespace C4PHub.Core.Tests.Extensions
         }
         #endregion ToStandardFormatString
 
+        #region ToUniversalFormatString
+        [Theory]
+        [MemberData(nameof(DataGenerator.GetDateTimeOffsetAndUniversalStrings), MemberType = typeof(DataGenerator))]
+        public void ToUniversalFormatString_ReturnsCorrectFormat_WhenInputIsValid(DateTimeOffset sourceOffset, string expectedString)
+        {
+            var result = sourceOffset.ToUniversalFormatString();
+
+            Assert.Equal(expectedString, result);
+        }
+        #endregion ToUniversalFormatString
+
         #region Private classes
         private class DataGenerator
         {
@@ -63,6 +74,49 @@ namespace C4PHub.Core.Tests.Extensions
                 yield return new object[]
                 {
                     new DateTimeOffset(new DateTime(2024, 7, 15, 9, 45, 0), TimeSpan.FromHours(-9)), "2024-07-15T09:45:00-09:00"
+                };
+            }
+
+            public static IEnumerable<object[]> GetDateTimeOffsetAndUniversalStrings()
+            {
+                yield return new object[]    {
+                    new DateTimeOffset(new DateTime(2022, 3, 4, 5, 6, 7), TimeSpan.FromHours(-8)), "20220304T130607Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2022, 6, 12, 10, 30, 0), TimeSpan.FromHours(2)), "20220612T083000Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2022, 9, 20, 15, 45, 0), TimeSpan.FromHours(5)), "20220920T104500Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2022, 12, 31, 23, 59, 59), TimeSpan.FromHours(-5)), "20230101T045959Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2023, 2, 14, 12, 0, 0), TimeSpan.FromHours(0)), "20230214T120000Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2023, 5, 1, 8, 15, 30), TimeSpan.FromHours(-3)), "20230501T111530Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2023, 8, 10, 18, 45, 0), TimeSpan.FromHours(7)), "20230810T114500Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2023, 11, 22, 6, 30, 0), TimeSpan.FromHours(-6)), "20231122T123000Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2024, 4, 5, 16, 0, 0), TimeSpan.FromHours(4)), "20240405T120000Z"
+                };
+                yield return new object[]
+                {
+                    new DateTimeOffset(new DateTime(2024, 7, 15, 9, 45, 0), TimeSpan.FromHours(-9)), "20240715T184500Z"
                 };
             }
 

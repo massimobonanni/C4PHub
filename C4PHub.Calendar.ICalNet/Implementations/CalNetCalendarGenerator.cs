@@ -1,4 +1,4 @@
-﻿using C4PHub.Core.Entities;
+﻿using C4PHub.Core.Entities; 
 using C4PHub.Core.Interfaces;
 using Ical.Net;
 using Ical.Net.CalendarComponents;
@@ -42,19 +42,19 @@ namespace C4PHub.Calendar.ICalNet.Implementations
                 case CalendarType.EventDate:
                     @event.Description = $"{c4p.EventName}";
                     @event.Summary = $"{c4p.EventName}";
-                    @event.Start = new CalDateTime(c4p.EventDate.ToStandardFormatString());
-                    @event.End = new CalDateTime(c4p.EventEndDate.ToStandardFormatString());
+                    @event.Start = new CalDateTime(c4p.EventDate.ToUniversalFormatString());
+                    @event.End = new CalDateTime(c4p.EventEndDate.ToUniversalFormatString());
                     break;
                 case CalendarType.C4PExpirationDate:
                     @event.Description = $"C4P expiration for {c4p.EventName}";
                     @event.Summary = $"C4P expiration for {c4p.EventName}";
-                    @event.Start = new CalDateTime(c4p.ExpiredDate.ToStandardFormatString());
+                    @event.Start = new CalDateTime(c4p.ExpiredDate.ToUniversalFormatString());
                     @event.Duration = new TimeSpan(24, 0, 0);
                     break;
                 default:
                     throw new NotImplementedException();
             }
-            var calendar = new Calendar();
+            var calendar = new Ical.Net.Calendar();
             calendar.Events.Add(@event);
 
             var serializer = new CalendarSerializer();

@@ -94,11 +94,13 @@ namespace C4PHub.Sessionize.Implementations
                 if (c4pClosingDateTimeOffset.HasValue)
                     c4p.ExpiredDate = c4pClosingDateTimeOffset.Value;
 
-                var eventStartDate= DateTimeUtility.ParseStringToDateTimeOffset($"{eventStartDateStr} 00:00 AM UTC+00:00"); 
+                //var eventStartDate= DateTimeUtility.ParseStringToDateTimeOffset($"{eventStartDateStr} 00:00 AM UTC+00:00"); 
+                var eventStartDate = DateTimeUtility.ParseStringToDateTimeOffset($"{eventStartDateStr} 00:00 AM {c4pClosingDateTimezone}");
                 if (eventStartDate.HasValue)
                     c4p.EventDate = eventStartDate.Value;
 
-                var eventEndDate = DateTimeUtility.ParseStringToDateTimeOffset($"{eventEndDateStr} 11:59 PM UTC+00:00");
+                //var eventEndDate = DateTimeUtility.ParseStringToDateTimeOffset($"{eventEndDateStr} 11:59 PM UTC+00:00");
+                var eventEndDate = DateTimeUtility.ParseStringToDateTimeOffset($"{eventEndDateStr} 11:59 PM {c4pClosingDateTimezone}");
                 if (eventEndDate.HasValue)
                     c4p.EventEndDate = eventEndDate.Value;
 
