@@ -6,6 +6,7 @@ using C4PHub.Web.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 
 namespace C4PHub.Web.Controllers
 {
@@ -29,11 +30,14 @@ namespace C4PHub.Web.Controllers
         }
 
         [ResponseCache(Duration = 60)]
-        public async Task<IActionResult> ActiveC4P()
+        public async Task<IActionResult> ActiveC4P([FromQuery(Name ="clientTz")] string clientTimeZone)
         {
+            if (string.IsNullOrEmpty(clientTimeZone))
+                clientTimeZone = "UTC+00:00";
+
             var c4pList = await _persistance.GetOpenedC4PsAsync(default);
             var model = new ActiveC4PModel();
-            model.C4PList = c4pList.OrderBy(c4p => c4p.ExpiredDate); ;
+            model.FillModel(clientTimeZone, c4pList.OrderBy(c4p => c4p.ExpiredDate));  
             return View(model);
         }
 
@@ -46,7 +50,8 @@ namespace C4PHub.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { 
+            return View(new ErrorViewModel
+            {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                 Message = ErrorMessagesUtility.GetErrorMessage()
             });

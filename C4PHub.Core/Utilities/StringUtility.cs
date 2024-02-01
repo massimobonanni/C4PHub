@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -78,5 +79,34 @@ namespace C4PHub.Core.Utilities
                 return null;
         }
 
+
+
+        ///<summary>
+        /// Converts a UTC string to a TimeSpan.
+        /// </summary>
+        /// <remarks>
+        /// The method takes a UTC string in the format "UTC±HH:mm" and converts it to a TimeSpan.
+        /// The input string must start with "UTC" and be followed by the hours and minutes offset in the format "±HH:mm".
+        /// For example, "UTC+01:00" represents an offset of +1 hour and 0 minutes from UTC.
+        /// </remarks>
+        /// <param name="utcString">The UTC string to convert.</param>
+        /// <returns>The TimeSpan representing the UTC offset.</returns>
+        public static TimeSpan ConvertUtcStringToTimeSpan(string utcString)
+        {
+            utcString = utcString.ToUpper();
+            // Validate the input string
+            if (string.IsNullOrEmpty(utcString) || !(utcString.StartsWith("UTC+") || utcString.StartsWith("UTC-")))
+            {
+                throw new ArgumentException("Invalid UTC string format");
+            }
+
+            // Remove the "UTC" prefix and parse the hours and minutes
+            string timePart = utcString.Substring(3);
+            int hours = int.Parse(timePart.Substring(0, 3), NumberStyles.AllowLeadingSign);
+            int minutes = int.Parse(timePart.Substring(4, 2));
+
+            // Create a TimeSpan object with the parsed values
+            return new TimeSpan(hours, minutes, 0);
+        }
     }
 }

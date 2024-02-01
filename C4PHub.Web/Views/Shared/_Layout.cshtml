@@ -10,6 +10,24 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/C4PHub.Web.styles.css" asp-append-version="true" />
+    <script>
+        function getClientTimezone() {
+            // Get the offset in minutes from UTC
+            let offset = new Date().getTimezoneOffset();
+
+            // Convert the offset to hours and minutes
+            let sign = offset < 0 ? "+" : "-";
+            let hours = Math.abs(Math.floor(offset / 60));
+            let minutes = Math.abs(offset % 60);
+
+            // Pad the hours and minutes with leading zeros if needed
+            hours = hours.toString().padStart(2, "0");
+            minutes = minutes.toString().padStart(2, "0");
+
+            // Return the formatted string
+            return "UTC" + sign + hours + ":" + minutes;
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -23,7 +41,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-middle">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ActiveC4P">Open C4Ps</a>
+                            <a class="nav-link text-dark" id="c4plisturl" asp-area="" asp-controller="Home" asp-action="ActiveC4P">Open C4Ps</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="C4P" asp-action="Add">Add New C4P</a>
@@ -57,5 +75,12 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script defer>
+        // Get the <a> tag element
+        var editLink = document.getElementById("c4plisturl");
+        // Append the client timezone as a query string parameter
+        editLink.href += "?clienttz=" + encodeURIComponent(getClientTimezone());
+    </script>
+    </script>
 </body>
 </html>

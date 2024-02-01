@@ -1,12 +1,9 @@
-﻿using C4PHub.Core.Entities; 
+﻿using C4PHub.Core.Entities;
 using C4PHub.Core.Interfaces;
-using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.Diagnostics.Tracing;
 
 namespace C4PHub.Calendar.ICalNet.Implementations
 {

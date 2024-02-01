@@ -126,6 +126,24 @@ namespace C4PHub.Core.Tests.Utilities
         }
         #endregion ExtractUTCPart
 
+        #region ConvertUtcStringToTimeSpan
+        [Theory]
+        [MemberData(nameof(DataGenerator.GetWellFormedUTCStrings), MemberType = typeof(DataGenerator))]
+        public void ConvertUtcStringToTimeSpan_ShouldGenerateTheRightTimeSpan_WhenTheStringIsWellFormed(string utcString, TimeSpan expectedTimeSpan)
+        {
+            var result = StringUtility.ConvertUtcStringToTimeSpan(utcString);
+
+            Assert.Equal(result, expectedTimeSpan);
+        }
+
+        [Theory]
+        [MemberData(nameof(DataGenerator.GetWrongFormedUTCStrings), MemberType = typeof(DataGenerator))]
+        public void ConvertUtcStringToTimeSpan_ShouldThrowException_WhenTheStringIsWrongFormed(string utcString)
+        {
+            Assert.Throws<ArgumentException>(() => StringUtility.ConvertUtcStringToTimeSpan(utcString));
+        }
+        #endregion ConvertUtcStringToTimeSpan
+
         #region Private classes
         private class DataGenerator
         {
@@ -184,6 +202,39 @@ namespace C4PHub.Core.Tests.Utilities
                 yield return new object[] { "UTC+05:30 New Delhi", "UTC+05:30" };
                 yield return new object[] { "Mexico City (UTC-06:00) ", "UTC-06:00" };
                 yield return new object[] { "  UTC+02:00 Cairo  ", "UTC+02:00" };
+            }
+
+            public static IEnumerable<object[]> GetWellFormedUTCStrings()
+            {
+                yield return new object[] { "utc+00:00", TimeSpan.FromHours(0) };
+                yield return new object[] { "utc+01:00", TimeSpan.FromHours(1) };
+                yield return new object[] { "utc+02:00", TimeSpan.FromHours(2) };
+                yield return new object[] { "utc+03:00", TimeSpan.FromHours(3) };
+                yield return new object[] { "utc+04:00", TimeSpan.FromHours(4) };
+                yield return new object[] { "utc+05:00", TimeSpan.FromHours(5) };
+                yield return new object[] { "Utc+06:00", TimeSpan.FromHours(6) };
+                yield return new object[] { "utc+07:00", TimeSpan.FromHours(7) };
+                yield return new object[] { "UTC+08:00", TimeSpan.FromHours(8) };
+                yield return new object[] { "utc+09:00", TimeSpan.FromHours(9) };
+                yield return new object[] { "utc+10:00", TimeSpan.FromHours(10) };
+                yield return new object[] { "utc-01:00", TimeSpan.FromHours(-1) };
+                yield return new object[] { "UTC-02:00", TimeSpan.FromHours(-2) };
+                yield return new object[] { "utc-03:00", TimeSpan.FromHours(-3) };
+                yield return new object[] { "utc-04:00", TimeSpan.FromHours(-4) };
+                yield return new object[] { "utc-05:00", TimeSpan.FromHours(-5) };
+                yield return new object[] { "utC-06:00", TimeSpan.FromHours(-6) };
+                yield return new object[] { "utc-07:00", TimeSpan.FromHours(-7) };
+                yield return new object[] { "Utc-08:00", TimeSpan.FromHours(-8) };
+                yield return new object[] { "uTc-09:00", TimeSpan.FromHours(-9) };
+                yield return new object[] { "utc-10:00", TimeSpan.FromHours(-10) };
+            }
+
+            public static IEnumerable<object[]> GetWrongFormedUTCStrings()
+            {
+                yield return new object[] { "ut+00:00" };
+                yield return new object[] { "uTc00:00"};
+                yield return new object[] { "" };
+                yield return new object[] { "wrongformat" };
             }
         }
         #endregion Private classes

@@ -5,7 +5,6 @@
 @{
     ViewBag.Title = "Open C4Ps";
 }
-
 <h1>Open C4Ps</h1>
 @if (Model.C4PList.Any())
 {
@@ -34,17 +33,17 @@
                 <div class="row">
                     <div class="col-4">
                         C4P expiration @item.ExpiredDate.ToString("dd/MM/yyyy") &nbsp;
-                        @if (item.DayToExpiration() == 0)
+                        @if (item.DayToExpiration == 0)
                         {
                             <span class="badge bg-danger">Last day!</span>
                         }
-                        else if (item.DayToExpiration() <= 7)
+                        else if (item.DayToExpiration <= 7)
                         {
-                            <span class="badge bg-warning">@item.DayToExpiration() days left</span>
+                            <span class="badge bg-warning">@item.DayToExpiration days left</span>
                         }
                         else
                         {
-                            <span class="badge bg-success">@item.DayToExpiration() days left</span>
+                            <span class="badge bg-success">@item.DayToExpiration days left</span>
                         }
                         &nbsp;
                         <generateCalendar c4pId=@item.Id year=@item.EventDate.ToString("yyyy") type="C4PExpirationDate" format="Ics">
