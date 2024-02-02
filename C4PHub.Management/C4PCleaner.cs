@@ -23,7 +23,7 @@ namespace C4PHub.Management
         [Function("C4PCleaner")]
         public async Task Run([TimerTrigger("%C4PCleanerCron%")] TimerInfo myTimer)
         {
-            _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            _logger.LogInformation($"C4PCleaner function executed at: {DateTime.Now}");
             
             var c4pOlderThan=_config.GetValue<int>("C4PCleanerExpiredOlderThanDays");
             
@@ -39,11 +39,11 @@ namespace C4PHub.Management
 
                 if (deleteResult)
                 {
-                    _logger.LogInformation($"C4P {0} deleted",c4p);
+                    _logger.LogWarning("C4P {0} deleted",c4p);
                 }
                 else
                 {
-                    _logger.LogError($"C4P {0} could not be deleted",c4p);
+                    _logger.LogError("C4P {0} could not be deleted",c4p);
                 }
             }
         }
