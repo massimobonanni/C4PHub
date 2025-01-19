@@ -34,7 +34,7 @@ namespace C4PHub.StorageAccount.Implementations
                 TableServiceClient tableServiceClient = new TableServiceClient(this._config.ConnectionString);
                 TableClient tableClient = tableServiceClient.GetTableClient(tableName: this._config.TableName);
                 var response = await tableClient.DeleteEntityAsync(c4p.GeneratePartitionKey(), c4p.Id, cancellationToken: token);
-                this._logger.LogInformation("C4P {0} deleted: {1}", c4p, !response.IsError);
+                this._logger.LogInformation("C4P {0} deleted: {1} (HTTP Status {2}-{3})", c4p, !response.IsError, response.Status, response.ReasonPhrase);
                 return !response.IsError;
             }
             catch (Exception ex)
@@ -78,13 +78,13 @@ namespace C4PHub.StorageAccount.Implementations
 
                 C4PInfo c4pInfo = null;
                 if (c4pEntity.HasValue)
-                    c4pInfo= c4pEntity.Value.ToC4PInfo();
+                    c4pInfo = c4pEntity.Value.ToC4PInfo();
 
                 return c4pInfo;
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error during retrieving C4P {0} {1}", c4pId,c4pYear);
+                this._logger.LogError(ex, "Error during retrieving C4P {0} {1}", c4pId, c4pYear);
                 throw;
             }
         }
